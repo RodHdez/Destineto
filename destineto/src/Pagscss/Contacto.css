@@ -1,0 +1,413 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400;0,700;1,400&family=Lato:wght@300;400&display=swap');
+
+:root {
+  --wood:         #7a4f2d;
+  --cover-light:  #d4ae8a;
+  --cover-mid:    #c9a882;
+  --cover-dark:   #a07850;
+  --cover-shadow: #7a5538;
+  --co-page-l:    #f2ebd9; 
+  --co-page-r:    #f5efe3;
+  --ring:         #c0b090;
+  --bm-bg:        #2563b8;
+  --ink:          #1e1209;
+  --font-serif:   'Playfair Display', Georgia, serif;
+  --font-sans:    'Lato', sans-serif;
+  --ease:         cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.co-scene {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  
+  /* PROTECCIÓN ANTI-CORTE: Salvaguarda el desbordamiento de las pestañas al expandirse */
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 3rem 6rem 3rem 3rem; 
+  font-family: var(--font-sans);
+}
+
+.co-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-color: var(--wood);
+  background-image:
+    repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(0,0,0,0.025) 60px, rgba(0,0,0,0.025) 61px),
+    repeating-linear-gradient(180deg, transparent, transparent 10px, rgba(0,0,0,0.03) 10px, rgba(0,0,0,0.03) 11px),
+    radial-gradient(ellipse 100% 70% at 20% 30%, #9b6b3a 0%, transparent 55%),
+    linear-gradient(150deg, #8b5e35 0%, #5c3a1e 50%, #3b2510 100%);
+}
+
+/* ── Pestaña Indicadora ──────────────────────────────────── */
+.co-current-tab {
+  position: absolute;
+  z-index: 20;
+  background: var(--bm-bg);
+  color: #fff;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.45rem 1.4rem;
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  
+  top: calc(50vh - 287px); 
+  left: calc(50% + 140px); 
+  
+  animation: coFadeDown 0.5s var(--ease) both;
+}
+
+.co-current-tab__dot {
+  width: 6px; 
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  flex-shrink: 0;
+}
+
+/* ── Contenedor del Libro ────────────────────────────────── */
+.co-journal.open-book {
+  position: relative; 
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 840px; 
+  min-height: 520px;
+  
+  /* Colchón de seguridad a la derecha */
+  margin-right: 40px;
+  animation: coRiseUp 0.7s var(--ease) 0.1s both;
+}
+
+/* ── Tapa Trasera Extendida ──────────────────────────────── */
+.co-back-cover {
+  position: absolute;
+  inset: -6px -10px -10px -10px; 
+  background: linear-gradient(145deg, var(--cover-light) 0%, var(--cover-mid) 50%, var(--cover-dark) 100%);
+  border-radius: 6px;
+  z-index: 1;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+/* ── Páginas Internas ────────────────────────────────────── */
+.co-book-body {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  display: flex;
+  background: var(--co-page-r);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.05);
+}
+
+.co-book-page {
+  flex: 1;
+  padding: 3rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.co-page-left {
+  background: var(--co-page-l);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  background-image: linear-gradient(to right, transparent 90%, rgba(0,0,0,0.08) 100%);
+}
+
+.co-page-right {
+  background: var(--co-page-r);
+  background-image: linear-gradient(to left, transparent 95%, rgba(0,0,0,0.05) 100%);
+}
+
+.co-page-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+/* ── Elementos de Contenido (Izquierda) ───────────────────── */
+.co-title {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  font-size: 2.4rem;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.co-vintage-divider {
+  color: var(--wood);
+  opacity: 0.4;
+  font-size: 0.9rem;
+  letter-spacing: 0.5em;
+  margin-bottom: 2rem;
+}
+
+.co-info-block {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.co-info-label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--wood);
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.co-info-text {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  font-size: 1.05rem;
+  opacity: 0.85;
+}
+
+/* ── Estilos del Formulario (Derecha) ─────────────────────── */
+.co-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.co-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.co-label {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink);
+  opacity: 0.8;
+  font-weight: 700;
+}
+
+.co-input, .co-textarea {
+  font-family: var(--font-sans);
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed rgba(30,18,9,0.4);
+  padding: 0.4rem 0.2rem;
+  color: var(--ink);
+  font-size: 0.9rem;
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+
+.co-textarea {
+  resize: none;
+  line-height: 1.5;
+}
+
+.co-input:focus, .co-textarea:focus {
+  outline: none;
+  border-bottom-style: solid;
+  border-bottom-color: var(--bm-bg);
+}
+
+.co-submit-btn {
+  margin-top: 0.5rem;
+  background: var(--ink);
+  color: var(--co-page-r);
+  border: none;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.co-submit-btn:hover {
+  background: var(--bm-bg);
+  transform: translateY(-1px);
+}
+
+/* ── Anillos Centrales ───────────────────────────────────── */
+.co-rings {
+  position: absolute;
+  left: 50%; 
+  top: -6px; 
+  bottom: -10px;
+  width: 32px;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  pointer-events: none;
+}
+
+.co-ring {
+  width: 28px; 
+  height: 42px;
+  border-radius: 14px; 
+  border: 5px solid var(--ring);
+  background: transparent;
+  flex-shrink: 0;
+  box-shadow: inset 2px 0 4px rgba(0,0,0,0.2), 2px 3px 5px rgba(0,0,0,0.3);
+}
+
+/* ── Marcadores (Bookmarks) ──────────────────────────────── */
+.co-bookmarks {
+  position: absolute;
+  z-index: 10;
+  left: 100%;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 20px 0;
+  margin-left: -6px; 
+}
+
+.co-bookmark {
+  position: relative; 
+  display: block;
+  background: var(--bm-bg);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-align: center;
+  padding: 0 20px;
+  
+  width: 145px; 
+  height: 38px;
+  line-height: 38px;
+  border-radius: 0 6px 6px 0;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.25);
+  margin-bottom: 6px;
+  
+  transition: width 0.3s var(--ease), padding-left 0.3s var(--ease), box-shadow 0.3s var(--ease), background-color 0.2s ease;
+  animation: coPeekIn 0.5s var(--ease) both;
+  animation-delay: calc(0.2s + var(--i) * 0.08s);
+}
+
+.co-bookmark::before {
+  content: '';
+  position: absolute;
+  right: 99%; 
+  top: 0;
+  bottom: 0;
+  width: 20px; 
+  background: var(--bm-bg);
+  pointer-events: none;
+  transition: background-color 0.2s ease;
+}
+
+.co-bookmark:hover,
+.co-bookmark:focus-visible {
+  width: 175px; 
+  padding-left: 30px; 
+  box-shadow: 6px 4px 18px rgba(0,0,0,0.4);
+  background-color: #1d4ed8;
+  outline: none;
+}
+
+.co-bookmark:hover::before,
+.co-bookmark:focus-visible::before {
+  background-color: #1d4ed8;
+}
+
+/* ── Animaciones ─────────────────────────────────────────── */
+@keyframes coRiseUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes coFadeDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes coPeekIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .co-journal.open-book {
+    width: 90vw;
+    margin-right: 0;
+  }
+  .co-current-tab {
+    position: relative;
+    top: auto;
+    left: auto;
+    margin: 0 auto 1rem;
+  }
+}
+
+@media (max-width: 650px) {
+  .co-journal.open-book {
+    flex-direction: column;
+    width: 100%;
+  }
+  .co-book-body {
+    flex-direction: column;
+  }
+  .co-rings {
+    display: none; 
+  }
+  .co-page-left {
+    border-right: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background-image: none;
+  }
+  .co-bookmarks {
+    position: relative;
+    left: auto;
+    top: auto;
+    bottom: auto;
+    width: 100%;
+    margin-left: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 12px 0 0;
+    gap: 6px;
+  }
+  .co-bookmark {
+    width: auto;
+    border-radius: 4px;
+    margin-bottom: 0;
+    animation: none;
+    padding: 0 16px;
+  }
+  .co-bookmark::before { display: none; }
+}
