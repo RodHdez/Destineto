@@ -1,5 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import '../Pagscss/Historia.css';
+import FlipPage from '../Flippage';
+import useFlipNavigate from '../useFlipNavigate'
+
 
 const bookmarks = [
   { id: 'inicio',     label: 'Inicio',            path: '/'           },
@@ -14,6 +17,7 @@ function Historia() {
   const navigate = useNavigate();
 
   return (
+    <FlipPage>
     <div className="hi-scene">
       <div className="hi-bg" aria-hidden="true" />
 
@@ -79,6 +83,7 @@ function Historia() {
 
       </div>
     </div>
+    </FlipPage>
   );
 }
 

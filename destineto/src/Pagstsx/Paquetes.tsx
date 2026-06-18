@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
+import FlipPage from '../Flippage';
 import '../Pagscss/Paquetes.css';
+import useFlipNavigate from '../useFlipNavigate'
 
 const bookmarks = [
   { id: 'inicio',     label: 'Inicio',            path: '/'           },
@@ -14,6 +16,7 @@ function Paquetes() {
   const navigate = useNavigate();
 
   return (
+    <FlipPage>
     <div className="pa-scene">
       <div className="pa-bg" aria-hidden="true" />
 
@@ -85,6 +88,7 @@ function Paquetes() {
 
       </div>
     </div>
+    </FlipPage>
   );
 }
 

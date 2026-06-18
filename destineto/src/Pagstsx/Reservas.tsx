@@ -1,5 +1,7 @@
 import { useNavigate } from 'react-router-dom';
+import FlipPage from '../Flippage';
 import '../Pagscss/Reservas.css';
+import useFlipNavigate from '../useFlipNavigate'
 
 const bookmarks = [
   { id: 'inicio',     label: 'Inicio',            path: '/'           },
@@ -14,6 +16,7 @@ function Reservas() {
   const navigate = useNavigate();
 
   return (
+    <FlipPage>
     <div className="re-scene">
       <div className="re-bg" aria-hidden="true" />
 
@@ -100,6 +103,7 @@ function Reservas() {
 
       </div>
     </div>
+    </FlipPage>
   );
 }
 

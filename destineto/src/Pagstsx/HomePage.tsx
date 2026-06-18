@@ -1,4 +1,5 @@
-import { useNavigate } from 'react-router-dom'
+import useFlipNavigate from '../useFlipNavigate'
+import FlipPage from '../Flippage'
 import '../Pagscss/HomePage.css'
 
 const bookmarks = [
@@ -11,61 +12,57 @@ const bookmarks = [
 ]
 
 function HomePage() {
-  const navigate = useNavigate()
+  const flipTo = useFlipNavigate()
 
   return (
-    <div className="hp-scene">
-      <div className="hp-bg" aria-hidden="true" />
+    <FlipPage>
+      <div className="hp-scene">
+        <div className="hp-bg" aria-hidden="true" />
 
-      <div className="hp-current-tab">
-        <span className="hp-current-tab__dot" />
-        Página de Inicio
-      </div>
-
-      <div className="hp-journal">
-
-        {/* Rings — absolute, always on top */}
-        <div className="hp-rings" aria-hidden="true">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="hp-ring" />
-          ))}
+        <div className="hp-current-tab">
+          <span className="hp-current-tab__dot" />
+          Página de Inicio
         </div>
 
-        {/* Back cover and pages — absolute, behind everything */}
-        <div className="hp-back-cover" aria-hidden="true" />
-        <div className="hp-pages-stack" aria-hidden="true">
-          <div className="hp-page hp-page--1" />
-          <div className="hp-page hp-page--2" />
-          <div className="hp-page hp-page--3" />
-        </div>
-
-        {/* Cover — z-index 20, sits on top of bookmarks */}
-        <div className="hp-cover">
-          <div className="hp-logo-box" aria-label="Logo de marca">
-            <span className="hp-logo-text">LOGO DE<br />MARCA</span>
+        <div className="hp-journal">
+          <div className="hp-rings" aria-hidden="true">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="hp-ring" />
+            ))}
           </div>
-          <p className="hp-tagline">
-            Propiedad de<br />
-            <em>"Alquileres y Destineto"</em>
-          </p>
+
+          <div className="hp-back-cover" aria-hidden="true" />
+          <div className="hp-pages-stack" aria-hidden="true">
+            <div className="hp-page hp-page--1" />
+            <div className="hp-page hp-page--2" />
+            <div className="hp-page hp-page--3" />
+          </div>
+
+          <div className="hp-cover">
+            <div className="hp-logo-box" aria-label="Logo de marca">
+              <span className="hp-logo-text">LOGO DE<br />MARCA</span>
+            </div>
+            <p className="hp-tagline">
+              Propiedad de<br />
+              <em>"Alquileres y Destineto"</em>
+            </p>
+          </div>
+
+          <nav className="hp-bookmarks" aria-label="Secciones del sitio">
+            {bookmarks.map((bm, i) => (
+              <button
+                key={bm.id}
+                className="hp-bookmark"
+                style={{ '--i': i } as React.CSSProperties}
+                onClick={() => flipTo(bm.path)}
+              >
+                {bm.label}
+              </button>
+            ))}
+          </nav>
         </div>
-
-        {/* Bookmarks — z-index 10, flex column beside cover */}
-        <nav className="hp-bookmarks" aria-label="Secciones del sitio">
-          {bookmarks.map((bm, i) => (
-            <button
-              key={bm.id}
-              className="hp-bookmark"
-              style={{ '--i': i } as React.CSSProperties}
-              onClick={() => navigate(bm.path)}
-            >
-              {bm.label}
-            </button>
-          ))}
-        </nav>
-
       </div>
-    </div>
+    </FlipPage>
   )
 }
 
