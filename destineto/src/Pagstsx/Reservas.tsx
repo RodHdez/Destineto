@@ -1,7 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import FlipPage from '../Flippage';
 import '../Pagscss/Reservas.css';
-import useFlipNavigate from '../useFlipNavigate'
+import '../PageFlip.css' 
+import useFlipNavigate from '../useFlipNavigate';
 
 const bookmarks = [
   { id: 'inicio',     label: 'Inicio',            path: '/'           },
@@ -13,10 +12,9 @@ const bookmarks = [
 ];
 
 function Reservas() {
-  const navigate = useNavigate();
-
+   const flipTo = useFlipNavigate()
+ 
   return (
-    <FlipPage>
     <div className="re-scene">
       <div className="re-bg" aria-hidden="true" />
 
@@ -26,7 +24,7 @@ function Reservas() {
         Reservas
       </div>
 
-      <div className="re-journal open-book">
+      <div className="re-journal open-book flip-journal">
 
         {/* Estructura de la tapa trasera */}
         <div className="re-back-cover" aria-hidden="true" />
@@ -35,7 +33,7 @@ function Reservas() {
         <div className="re-book-body">
           
           {/* PÁGINA IZQUIERDA */}
-          <div className="re-book-page re-page-left">
+          <div className="re-book-page re-page-left flip-pages-left">
             <div className="re-page-content">
               <h1 className="re-title">Agenda tu<br />Aventura</h1>
               <div className="re-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
@@ -46,7 +44,7 @@ function Reservas() {
           </div>
 
           {/* PÁGINA DERECHA (Simulación de Formulario / Notas de reserva) */}
-          <div className="re-book-page re-page-right">
+          <div className="re-book-page re-page-right flip-pages">
             <div className="re-page-content">
               <form className="re-form" onSubmit={(e) => e.preventDefault()}>
                 <div className="re-form-group">
@@ -94,7 +92,7 @@ function Reservas() {
               key={bm.id}
               className="re-bookmark"
               style={{ '--i': i } as React.CSSProperties}
-              onClick={() => navigate(bm.path)}
+              onClick={() => flipTo(bm.path)}
             >
               {bm.label}
             </button>
@@ -103,7 +101,6 @@ function Reservas() {
 
       </div>
     </div>
-    </FlipPage>
   );
 }
 

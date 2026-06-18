@@ -1,7 +1,6 @@
-import { useNavigate } from 'react-router-dom';
 import '../Pagscss/Historia.css';
-import FlipPage from '../Flippage';
-import useFlipNavigate from '../useFlipNavigate'
+import '../PageFlip.css' 
+import useFlipNavigate from '../useFlipNavigate';
 
 
 const bookmarks = [
@@ -14,10 +13,9 @@ const bookmarks = [
 ];
 
 function Historia() {
-  const navigate = useNavigate();
-
+   const flipTo = useFlipNavigate()
+   
   return (
-    <FlipPage>
     <div className="hi-scene">
       <div className="hi-bg" aria-hidden="true" />
 
@@ -27,7 +25,7 @@ function Historia() {
         Nuestra Historia
       </div>
 
-      <div className="hi-journal open-book">
+      <div className="hi-journal open-book flip-journal">
 
         {/* Estructura de la tapa trasera */}
         <div className="hi-back-cover" aria-hidden="true" />
@@ -36,7 +34,7 @@ function Historia() {
         <div className="hi-book-body">
           
           {/* PÁGINA IZQUIERDA */}
-          <div className="hi-book-page hi-page-left">
+          <div className="hi-book-page hi-page-left flip-pages-left">
             <div className="hi-page-content">
               <h1 className="hi-title">Nuestra<br />Historia</h1>
               <div className="hi-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
@@ -44,7 +42,7 @@ function Historia() {
           </div>
 
           {/* PÁGINA DERECHA */}
-          <div className="hi-book-page hi-page-right">
+          <div className="hi-book-page hi-page-right flip-pages">
             <div className="hi-page-content">
               <p className="hi-text">
                 Todo comenzó con un mapa viejo, una mochila ligera y un deseo insaciable de descubrir lugares auténticos. Lo que empezó como un diario de viaje personal se convirtió en lo que hoy es <em>"Alquileres y Destineto"</em>.
@@ -74,7 +72,7 @@ function Historia() {
               key={bm.id}
               className="hi-bookmark"
               style={{ '--i': i } as React.CSSProperties}
-              onClick={() => navigate(bm.path)}
+              onClick={() => flipTo(bm.path)}
             >
               {bm.label}
             </button>
@@ -83,7 +81,6 @@ function Historia() {
 
       </div>
     </div>
-    </FlipPage>
   );
 }
 

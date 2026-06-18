@@ -1,7 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import FlipPage from '../Flippage';
 import '../Pagscss/Paquetes.css';
-import useFlipNavigate from '../useFlipNavigate'
+import '../PageFlip.css' 
+import useFlipNavigate from '../useFlipNavigate';
 
 const bookmarks = [
   { id: 'inicio',     label: 'Inicio',            path: '/'           },
@@ -13,10 +12,9 @@ const bookmarks = [
 ];
 
 function Paquetes() {
-  const navigate = useNavigate();
+   const flipTo = useFlipNavigate()
 
   return (
-    <FlipPage>
     <div className="pa-scene">
       <div className="pa-bg" aria-hidden="true" />
 
@@ -26,7 +24,7 @@ function Paquetes() {
         Paquetes de Viaje
       </div>
 
-      <div className="pa-journal open-book">
+      <div className="pa-journal open-book flip-journal">
 
         {/* Estructura de la tapa trasera */}
         <div className="pa-back-cover" aria-hidden="true" />
@@ -35,7 +33,7 @@ function Paquetes() {
         <div className="pa-book-body">
           
           {/* PÁGINA IZQUIERDA */}
-          <div className="pa-book-page pa-page-left">
+          <div className="pa-book-page pa-page-left flip-pages-left">
             <div className="pa-page-content">
               <h1 className="pa-title">Nuestros<br />Paquetes</h1>
               <div className="pa-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
@@ -43,7 +41,7 @@ function Paquetes() {
           </div>
 
           {/* PÁGINA DERECHA */}
-          <div className="pa-book-page pa-page-right">
+          <div className="pa-book-page pa-page-right flip-pages">
             <div className="pa-page-content">
               <p className="pa-text">
                 Diseñamos itinerarios a la medida para que solo te preocupes por coleccionar momentos. Descubre nuestras opciones más populares:
@@ -79,7 +77,7 @@ function Paquetes() {
               key={bm.id}
               className="pa-bookmark"
               style={{ '--i': i } as React.CSSProperties}
-              onClick={() => navigate(bm.path)}
+              onClick={() => flipTo(bm.path)}
             >
               {bm.label}
             </button>
@@ -88,7 +86,6 @@ function Paquetes() {
 
       </div>
     </div>
-    </FlipPage>
   );
 }
 

@@ -1,7 +1,6 @@
-import { useNavigate } from 'react-router-dom';
 import '../Pagscss/Acerca.css';
-import FlipPage from '../Flippage';
-import useFlipNavigate from '../useFlipNavigate'
+import '../PageFlip.css' 
+import useFlipNavigate from '../useFlipNavigate';
 
 const bookmarks = [
   { id: 'inicio',     label: 'Inicio',            path: '/'           },
@@ -13,29 +12,25 @@ const bookmarks = [
 ];
 
 function Acerca() {
-  const navigate = useNavigate();
+  const flipTo = useFlipNavigate()
+
 
   return (
-    <FlipPage>
     <div className="ac-scene">
       <div className="ac-bg" aria-hidden="true" />
 
-      {/* Independent indicator tab */}
       <div className="ac-current-tab">
         <span className="ac-current-tab__dot" />
         Acerca de Nosotros
       </div>
 
-      <div className="ac-journal open-book">
+      <div className="ac-journal open-book flip-journal">
 
-        {/* Back cover structure */}
         <div className="ac-back-cover" aria-hidden="true" />
 
-        {/* Inner open pages */}
         <div className="ac-book-body">
           
-          {/* LEFT PAGE */}
-          <div className="ac-book-page ac-page-left">
+          <div className="ac-book-page ac-page-left flip-pages-left">
             <div className="ac-page-content">
               <h1 className="ac-title">Acerca de</h1>
               <div className="ac-logo-box">
@@ -44,8 +39,7 @@ function Acerca() {
             </div>
           </div>
 
-          {/* RIGHT PAGE */}
-          <div className="ac-book-page ac-page-right">
+          <div className="ac-book-page ac-page-right flip-pages">
             <div className="ac-page-content">
               <p className="ac-text">
                 Bienvenido a nuestro rincón del mundo. En <em>"Alquileres y Destineto"</em>, 
@@ -60,21 +54,19 @@ function Acerca() {
 
         </div>
 
-        {/* Central Rings */}
         <div className="ac-rings" aria-hidden="true">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="ac-ring" />
           ))}
         </div>
 
-        {/* Bookmarks bar */}
         <nav className="ac-bookmarks" aria-label="Secciones del sitio">
           {bookmarks.map((bm, i) => (
             <button
               key={bm.id}
               className="ac-bookmark"
               style={{ '--i': i } as React.CSSProperties}
-              onClick={() => navigate(bm.path)}
+              onClick={() => flipTo(bm.path)}
             >
               {bm.label}
             </button>
@@ -83,7 +75,6 @@ function Acerca() {
 
       </div>
     </div>
-    </FlipPage>
   );
 }
 

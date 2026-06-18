@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import '../Pagscss/Contacto.css';
-import FlipPage from '../Flippage';
-import useFlipNavigate from '../useFlipNavigate'
+import '../PageFlip.css' 
+import useFlipNavigate from '../useFlipNavigate';
+
 
 const bookmarks = [
   { id: 'inicio',     label: 'Inicio',            path: '/'           },
@@ -13,10 +13,9 @@ const bookmarks = [
 ];
 
 function Contacto() {
-  const navigate = useNavigate();
+   const flipTo = useFlipNavigate()
 
   return (
-    <FlipPage>
     <div className="co-scene">
       <div className="co-bg" aria-hidden="true" />
 
@@ -26,7 +25,8 @@ function Contacto() {
         Contáctanos
       </div>
 
-      <div className="co-journal open-book">
+      
+        <div className="co-journal open-book flip-journal">
 
         {/* Estructura de la tapa trasera */}
         <div className="co-back-cover" aria-hidden="true" />
@@ -35,7 +35,7 @@ function Contacto() {
         <div className="co-book-body">
           
           {/* PÁGINA IZQUIERDA */}
-          <div className="co-book-page co-page-left">
+          <div className="co-book-page co-page-left flip-pages-left">
             <div className="co-page-content">
               <h1 className="co-title">Escríbenos<br />un Mensaje</h1>
               <div className="co-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
@@ -49,7 +49,7 @@ function Contacto() {
           </div>
 
           {/* PÁGINA DERECHA */}
-          <div className="co-book-page co-page-right">
+          <div className="co-book-page co-page-right flip-pages">
             <div className="co-page-content">
               <form className="co-form" onSubmit={(e) => e.preventDefault()}>
                 <div className="co-form-group">
@@ -90,7 +90,7 @@ function Contacto() {
               key={bm.id}
               className="co-bookmark"
               style={{ '--i': i } as React.CSSProperties}
-              onClick={() => navigate(bm.path)}
+              onClick={() =>flipTo(bm.path)}
             >
               {bm.label}
             </button>
@@ -99,7 +99,6 @@ function Contacto() {
 
       </div>
     </div>
-    </FlipPage>
   );
 }
 

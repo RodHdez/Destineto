@@ -1,7 +1,6 @@
-import { useNavigate } from 'react-router-dom';
-import FlipPage from '../Flippage';
 import '../Pagscss/Locaciones.css';
-import useFlipNavigate from '../useFlipNavigate'
+import '../PageFlip.css' 
+import useFlipNavigate from '../useFlipNavigate';
 
 const bookmarks = [
   { id: 'inicio',     label: 'Inicio',            path: '/'           },
@@ -13,10 +12,9 @@ const bookmarks = [
 ];
 
 function Locaciones() {
-  const navigate = useNavigate();
-
+   const flipTo = useFlipNavigate()
+    
   return (
-    <FlipPage>
     <div className="lo-scene">
       <div className="lo-bg" aria-hidden="true" />
 
@@ -26,7 +24,7 @@ function Locaciones() {
         Locaciones
       </div>
 
-      <div className="lo-journal open-book">
+      <div className="lo-journal open-book flip-journal">
 
         {/* Estructura de la tapa trasera */}
         <div className="lo-back-cover" aria-hidden="true" />
@@ -35,7 +33,7 @@ function Locaciones() {
         <div className="lo-book-body">
           
           {/* PÁGINA IZQUIERDA */}
-          <div className="lo-book-page lo-page-left">
+          <div className="lo-book-page lo-page-left flip-pages-left">
             <div className="lo-page-content">
               <h1 className="lo-title">Nuestras<br />Locaciones</h1>
               <div className="lo-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
@@ -43,7 +41,7 @@ function Locaciones() {
           </div>
 
           {/* PÁGINA DERECHA */}
-          <div className="lo-book-page lo-page-right">
+          <div className="lo-book-page lo-page-right flip-pages">
             <div className="lo-page-content">
               <p className="lo-text">
                 Cada uno de nuestros destinos ha sido seleccionado meticulosamente para ofrecerte un equilibrio perfecto entre confort, autenticidad y belleza natural.
@@ -78,7 +76,7 @@ function Locaciones() {
               key={bm.id}
               className="lo-bookmark"
               style={{ '--i': i } as React.CSSProperties}
-              onClick={() => navigate(bm.path)}
+              onClick={() => flipTo(bm.path)}
             >
               {bm.label}
             </button>
@@ -87,7 +85,6 @@ function Locaciones() {
 
       </div>
     </div>
-    </FlipPage>
   );
 }
 
