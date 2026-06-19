@@ -287,6 +287,32 @@
   background-color: #1d4ed8;
 }
 
+.pa-page-arrows {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.pa-arrow {
+  position: absolute;
+  bottom: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--pa-ink, #1e1209);
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  padding: 0.5rem;
+}
+
+.pa-arrow:hover { opacity: 1; }
+.pa-arrow-left  { left: 1rem; }
+.pa-arrow-right { right: 1rem; }
 /* ── Animaciones ─────────────────────────────────────────── */
 @keyframes paRiseUp {
   from { opacity: 0; transform: translateY(28px); }

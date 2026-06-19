@@ -12,6 +12,19 @@ const bookmarks = [
   { id: 'contacto',   label: 'Contáctanos',       path: '/contacto'   },
 ];
 
+const leftPages = [
+  <div className="ac-page-content">
+    <h1 className="ac-title">Acerca de</h1>
+    <div className="ac-logo-box">
+      <span className="ac-logo-text">LOGO DE<br />MARCA</span>
+    </div>
+  </div>,
+  <div className="ac-page-content">
+    <h1 className="ac-title">Nuestros<br />Valores</h1>
+    <div className="ac-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
+  </div>,
+]
+
 const rightPages = [
   <div className="ac-page-content">
     <p className="ac-text">
@@ -26,9 +39,6 @@ const rightPages = [
   <div className="ac-page-content">
     <p className="ac-text">Contenido de la segunda sección...</p>
   </div>,
-  <div className="ac-page-content">
-    <p className="ac-text">Contenido de la tercera sección...</p>
-  </div>,
 ]
 
 function Acerca() {
@@ -36,46 +46,75 @@ function Acerca() {
   const [page, setPage] = useState(0)
 
   const goNext = () => {
-  const el = document.querySelector('.flip-pages') as HTMLElement | null
-  if (!el) { setPage(p => Math.min(p + 1, rightPages.length - 1)); return }
-  el.style.animation = 'none'
-  void el.offsetHeight
-  el.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 1, 1), opacity 0.4s ease-in'
-  el.style.transformOrigin = 'left center'
-  el.style.transform = 'perspective(1200px) rotateY(-90deg)'
-  el.style.opacity = '0'
-  setTimeout(() => {
-    setPage(p => Math.min(p + 1, rightPages.length - 1))
-    el.style.transition = 'none'
-    el.style.transform = 'perspective(1200px) rotateY(90deg)'
-    setTimeout(() => {
-      el.style.transition = 'transform 0.5s cubic-bezier(0, 0.55, 0.45, 1), opacity 0.4s ease-out'
-      el.style.transform = 'perspective(1200px) rotateY(0deg)'
-      el.style.opacity = '1'
-    }, 20)
-  }, 500)
-}
+    const right = document.querySelector('.flip-pages') as HTMLElement | null
+    const left = document.querySelector('.flip-pages-left') as HTMLElement | null
+    if (!right || !left) { setPage(p => Math.min(p + 1, rightPages.length - 1)); return }
 
-const goPrev = () => {
-  const el = document.querySelector('.flip-pages-left') as HTMLElement | null
-  if (!el) { setPage(p => Math.max(p - 1, 0)); return }
-  el.style.animation = 'none'
-  void el.offsetHeight
-  el.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 1, 1), opacity 0.4s ease-in'
-  el.style.transformOrigin = 'right center'
-  el.style.transform = 'perspective(1200px) rotateY(90deg)'
-  el.style.opacity = '0'
-  setTimeout(() => {
-    setPage(p => Math.max(p - 1, 0))
-    el.style.transition = 'none'
-    el.style.transform = 'perspective(1200px) rotateY(-90deg)'
+    // Flip both pages out simultaneously
+    ;[right, left].forEach(el => {
+      el.style.animation = 'none'
+    })
+    void right.offsetHeight
+
+    right.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 1, 1), opacity 0.4s ease-in'
+    right.style.transformOrigin = 'left center'
+    right.style.transform = 'perspective(1200px) rotateY(-90deg)'
+    right.style.opacity = '0'
+
+    left.style.transition = 'opacity 0.3s ease-in'
+    left.style.opacity = '0'
+
     setTimeout(() => {
-      el.style.transition = 'transform 0.5s cubic-bezier(0, 0.55, 0.45, 1), opacity 0.4s ease-out'
-      el.style.transform = 'perspective(1200px) rotateY(0deg)'
-      el.style.opacity = '1'
-    }, 20)
-  }, 500)
-}
+      setPage(p => Math.min(p + 1, rightPages.length - 1))
+
+      right.style.transition = 'none'
+      right.style.transform = 'perspective(1200px) rotateY(90deg)'
+      left.style.transition = 'none'
+
+      setTimeout(() => {
+        right.style.transition = 'transform 0.5s cubic-bezier(0, 0.55, 0.45, 1), opacity 0.4s ease-out'
+        right.style.transform = 'perspective(1200px) rotateY(0deg)'
+        right.style.opacity = '1'
+
+        left.style.transition = 'opacity 0.4s ease-out'
+        left.style.opacity = '1'
+      }, 20)
+    }, 500)
+  }
+
+  const goPrev = () => {
+    const right = document.querySelector('.flip-pages') as HTMLElement | null
+    const left = document.querySelector('.flip-pages-left') as HTMLElement | null
+    if (!right || !left) { setPage(p => Math.max(p - 1, 0)); return }
+
+    left.style.animation = 'none'
+    void left.offsetHeight
+
+    left.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 1, 1), opacity 0.4s ease-in'
+    left.style.transformOrigin = 'right center'
+    left.style.transform = 'perspective(1200px) rotateY(90deg)'
+    left.style.opacity = '0'
+
+    right.style.transition = 'opacity 0.3s ease-in'
+    right.style.opacity = '0'
+
+    setTimeout(() => {
+      setPage(p => Math.max(p - 1, 0))
+
+      left.style.transition = 'none'
+      left.style.transform = 'perspective(1200px) rotateY(-90deg)'
+      right.style.transition = 'none'
+
+      setTimeout(() => {
+        left.style.transition = 'transform 0.5s cubic-bezier(0, 0.55, 0.45, 1), opacity 0.4s ease-out'
+        left.style.transform = 'perspective(1200px) rotateY(0deg)'
+        left.style.opacity = '1'
+
+        right.style.transition = 'opacity 0.4s ease-out'
+        right.style.opacity = '1'
+      }, 20)
+    }, 500)
+  }
 
   return (
     <div className="ac-scene">
@@ -91,15 +130,9 @@ const goPrev = () => {
         <div className="ac-back-cover" aria-hidden="true" />
 
         <div className="ac-book-body">
-          
+
           <div className="ac-book-page ac-page-left flip-pages-left">
-            <div className="ac-page-content">
-              <h1 className="ac-title">Acerca de</h1>
-              <div className="ac-logo-box">
-                <span className="ac-logo-text">LOGO DE<br />MARCA</span>
-              </div>
-            </div>
-            {/* Left arrow at bottom left */}
+            {leftPages[page]}
             {page > 0 && (
               <button className="ac-arrow ac-arrow-left" onClick={goPrev}>←</button>
             )}
@@ -107,7 +140,6 @@ const goPrev = () => {
 
           <div className="ac-book-page ac-page-right flip-pages">
             {rightPages[page]}
-            {/* Right arrow at bottom right */}
             {page < rightPages.length - 1 && (
               <button className="ac-arrow ac-arrow-right" onClick={goNext}>→</button>
             )}

@@ -12,6 +12,22 @@ const bookmarks = [
   { id: 'reservas',   label: 'Reservas',          path: '/reservas'   },
 ];
 
+const leftPages = [
+  <div className="co-page-content">
+    <h1 className="co-title">Escríbenos<br />un Mensaje</h1>
+    <div className="co-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
+    <div className="co-info-block">
+      <span className="co-info-label">Correspondencia</span>
+      <p className="co-info-text">contacto@destineto.com</p>
+      <p className="co-info-text">+1 (555) 019-2834</p>
+    </div>
+  </div>,
+  <div className="co-page-content">
+    <h1 className="co-title">Síguenos</h1>
+    <div className="co-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
+  </div>,
+]
+
 const rightPages = [
   <div className="co-page-content">
     <form className="co-form" onSubmit={(e) => e.preventDefault()}>
@@ -40,43 +56,71 @@ function Contacto() {
   const [page, setPage] = useState(0)
 
   const goNext = () => {
-    const el = document.querySelector('.flip-pages') as HTMLElement | null
-    if (!el) { setPage(p => Math.min(p + 1, rightPages.length - 1)); return }
-    el.style.animation = 'none'
-    void el.offsetHeight
-    el.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 1, 1), opacity 0.4s ease-in'
-    el.style.transformOrigin = 'left center'
-    el.style.transform = 'perspective(1200px) rotateY(-90deg)'
-    el.style.opacity = '0'
+    const right = document.querySelector('.flip-pages') as HTMLElement | null
+    const left = document.querySelector('.flip-pages-left') as HTMLElement | null
+    if (!right || !left) { setPage(p => Math.min(p + 1, rightPages.length - 1)); return }
+
+    right.style.animation = 'none'
+    left.style.animation = 'none'
+    void right.offsetHeight
+
+    right.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 1, 1), opacity 0.4s ease-in'
+    right.style.transformOrigin = 'left center'
+    right.style.transform = 'perspective(1200px) rotateY(-90deg)'
+    right.style.opacity = '0'
+
+    left.style.transition = 'opacity 0.3s ease-in'
+    left.style.opacity = '0'
+
     setTimeout(() => {
       setPage(p => Math.min(p + 1, rightPages.length - 1))
-      el.style.transition = 'none'
-      el.style.transform = 'perspective(1200px) rotateY(90deg)'
+
+      right.style.transition = 'none'
+      right.style.transform = 'perspective(1200px) rotateY(90deg)'
+      left.style.transition = 'none'
+
       setTimeout(() => {
-        el.style.transition = 'transform 0.5s cubic-bezier(0, 0.55, 0.45, 1), opacity 0.4s ease-out'
-        el.style.transform = 'perspective(1200px) rotateY(0deg)'
-        el.style.opacity = '1'
+        right.style.transition = 'transform 0.5s cubic-bezier(0, 0.55, 0.45, 1), opacity 0.4s ease-out'
+        right.style.transform = 'perspective(1200px) rotateY(0deg)'
+        right.style.opacity = '1'
+
+        left.style.transition = 'opacity 0.4s ease-out'
+        left.style.opacity = '1'
       }, 20)
     }, 500)
   }
 
   const goPrev = () => {
-    const el = document.querySelector('.flip-pages-left') as HTMLElement | null
-    if (!el) { setPage(p => Math.max(p - 1, 0)); return }
-    el.style.animation = 'none'
-    void el.offsetHeight
-    el.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 1, 1), opacity 0.4s ease-in'
-    el.style.transformOrigin = 'right center'
-    el.style.transform = 'perspective(1200px) rotateY(90deg)'
-    el.style.opacity = '0'
+    const right = document.querySelector('.flip-pages') as HTMLElement | null
+    const left = document.querySelector('.flip-pages-left') as HTMLElement | null
+    if (!right || !left) { setPage(p => Math.max(p - 1, 0)); return }
+
+    left.style.animation = 'none'
+    right.style.animation = 'none'
+    void left.offsetHeight
+
+    left.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 1, 1), opacity 0.4s ease-in'
+    left.style.transformOrigin = 'right center'
+    left.style.transform = 'perspective(1200px) rotateY(90deg)'
+    left.style.opacity = '0'
+
+    right.style.transition = 'opacity 0.3s ease-in'
+    right.style.opacity = '0'
+
     setTimeout(() => {
       setPage(p => Math.max(p - 1, 0))
-      el.style.transition = 'none'
-      el.style.transform = 'perspective(1200px) rotateY(-90deg)'
+
+      left.style.transition = 'none'
+      left.style.transform = 'perspective(1200px) rotateY(-90deg)'
+      right.style.transition = 'none'
+
       setTimeout(() => {
-        el.style.transition = 'transform 0.5s cubic-bezier(0, 0.55, 0.45, 1), opacity 0.4s ease-out'
-        el.style.transform = 'perspective(1200px) rotateY(0deg)'
-        el.style.opacity = '1'
+        left.style.transition = 'transform 0.5s cubic-bezier(0, 0.55, 0.45, 1), opacity 0.4s ease-out'
+        left.style.transform = 'perspective(1200px) rotateY(0deg)'
+        left.style.opacity = '1'
+
+        right.style.transition = 'opacity 0.4s ease-out'
+        right.style.opacity = '1'
       }, 20)
     }, 500)
   }
@@ -97,15 +141,7 @@ function Contacto() {
         <div className="co-book-body">
 
           <div className="co-book-page co-page-left flip-pages-left">
-            <div className="co-page-content">
-              <h1 className="co-title">Escríbenos<br />un Mensaje</h1>
-              <div className="co-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
-              <div className="co-info-block">
-                <span className="co-info-label">Correspondencia</span>
-                <p className="co-info-text">contacto@destineto.com</p>
-                <p className="co-info-text">+1 (555) 019-2834</p>
-              </div>
-            </div>
+            {leftPages[page]}
             {page > 0 && (
               <button className="co-arrow co-arrow-left" onClick={goPrev}>←</button>
             )}
