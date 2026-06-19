@@ -344,6 +344,37 @@
   background-color: #1d4ed8;
 }
 
+.co-bookmark:hover::before,
+.co-bookmark:focus-visible::before {
+  background-color: #1d4ed8;
+}
+
+.co-page-arrows {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.co-arrow {
+  position: absolute;
+  bottom: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--co-ink, #1e1209);
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  padding: 0.5rem;
+}
+
+.co-arrow:hover { opacity: 1; }
+.co-arrow-left  { left: 1rem; }
+.co-arrow-right { right: 1rem; }
 /* ── Animaciones ─────────────────────────────────────────── */
 @keyframes coRiseUp {
   from { opacity: 0; transform: translateY(28px); }

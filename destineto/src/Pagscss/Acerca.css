@@ -277,6 +277,33 @@
   background-color: #1d4ed8;
 }
 
+.ac-page-arrows {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.ac-arrow {
+  position: absolute;
+  bottom: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--ac-ink, #1e1209);
+  opacity: 0.4;
+  transition: opacity 0.2s;
+  padding: 0.5rem;
+}
+
+.ac-arrow:hover { opacity: 1; }
+.ac-arrow-left  { left: 1rem; }
+.ac-arrow-right { right: 1rem; }
+
 /* ── Animation Lifters ───────────────────────────────────── */
 @keyframes acRiseUp {
   from { opacity: 0; transform: translateY(28px); }
