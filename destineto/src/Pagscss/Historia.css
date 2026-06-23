@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400;0,700;1,400&family=Lato:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
 
 :root {
   --wood:         #7a4f2d;
@@ -6,11 +6,13 @@
   --cover-mid:    #c9a882;
   --cover-dark:   #a07850;
   --cover-shadow: #7a5538;
-  --hi-page-l:    #f2ebd9; 
+  --hi-page-l:    #f2ebd9;
   --hi-page-r:    #f5efe3;
   --ring:         #c0b090;
   --bm-bg:        #2563b8;
   --ink:          #1e1209;
+  --ink-light:    #5a4a38;
+  --accent:       #8b4513;
   --font-serif:   'Playfair Display', Georgia, serif;
   --font-sans:    'Lato', sans-serif;
   --ease:         cubic-bezier(0.22, 1, 0.36, 1);
@@ -23,11 +25,9 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  
-  /* SOLUCIÓN AL CORTE: Permite flujo horizontal sin guillotina y añade margen de seguridad */
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 3rem 6rem 3rem 3rem; 
+  padding: 3rem 6rem 3rem 3rem;
   font-family: var(--font-sans);
 }
 
@@ -43,7 +43,7 @@
     linear-gradient(150deg, #8b5e35 0%, #5c3a1e 50%, #3b2510 100%);
 }
 
-/* ── Pestaña Indicadora ──────────────────────────────────── */
+/* ── Current Tab ─────────────────────────────────────────── */
 .hi-current-tab {
   position: absolute;
   z-index: 20;
@@ -57,125 +57,202 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  
-  top: calc(50vh - 287px); 
-  left: calc(50% + 140px); 
-  
+  top: calc(50vh - 287px);
+  left: calc(50% + 140px);
   animation: hiFadeDown 0.5s var(--ease) both;
 }
 
 .hi-current-tab__dot {
-  width: 6px; 
-  height: 6px;
+  width: 6px; height: 6px;
   border-radius: 50%;
   background: rgba(255,255,255,0.6);
   flex-shrink: 0;
 }
 
-/* ── Contenedor del Libro ────────────────────────────────── */
+/* ── Journal ─────────────────────────────────────────────── */
 .hi-journal.open-book {
-  position: relative; 
+  position: relative;
   z-index: 1;
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  width: 840px; 
+  width: 840px;
   min-height: 520px;
-  
-  /* SOLUCIÓN AL CORTE: Margen derecho para asegurar espacio a los marcadores */
   margin-right: 40px;
   animation: hiRiseUp 0.7s var(--ease) 0.1s both;
 }
 
-/* ── Tapa Trasera Extendida ──────────────────────────────── */
 .hi-back-cover {
   position: absolute;
-  inset: -6px -10px -10px -10px; 
+  inset: -6px -10px -10px -10px;
   background: linear-gradient(145deg, var(--cover-light) 0%, var(--cover-mid) 50%, var(--cover-dark) 100%);
   border-radius: 6px;
   z-index: 1;
   box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
 
-/* ── Páginas Internas ────────────────────────────────────── */
+/* ── Book Body ───────────────────────────────────────────── */
 .hi-book-body {
-    position: relative;
+  position: relative;
   z-index: 5;
   width: 100%;
   display: flex;
-  background: var(--ac-page-r);
+  background: var(--hi-page-r);
   border-radius: 4px;
-  overflow: visible; /* changed from hidden — allows 3D flip to show */
+  overflow: visible;
   box-shadow: inset 0 0 40px rgba(0,0,0,0.05);
 }
 
 .hi-book-page {
   flex: 1;
-  padding: 3rem 2.5rem;
+  padding: 2.5rem 2.5rem 3.5rem;
   display: flex;
   flex-direction: column;
   position: relative;
+  min-height: 520px;
 }
 
 .hi-page-left {
   background: var(--hi-page-l);
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-  background-image: linear-gradient(to right, transparent 90%, rgba(0,0,0,0.08) 100%);
+  border-right: 1px solid rgba(0,0,0,0.08);
+  background-image: linear-gradient(to right, transparent 90%, rgba(0,0,0,0.06) 100%);
 }
 
 .hi-page-right {
   background: var(--hi-page-r);
-  background-image: linear-gradient(to left, transparent 95%, rgba(0,0,0,0.05) 100%);
+  background-image: linear-gradient(to left, transparent 95%, rgba(0,0,0,0.04) 100%);
 }
 
+/* ── Page Content ────────────────────────────────────────── */
 .hi-page-content {
-  position: relative;
-  z-index: 10;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100%;
+  gap: 1rem;
 }
 
-/* ── Tipografía Interna ──────────────────────────────────── */
-.hi-title {
-  font-family: var(--font-serif);
-  color: var(--ink);
-  font-size: 2.4rem;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
+.hi-page-content--centered {
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
+/* ── Typography ──────────────────────────────────────────── */
+.hi-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.25rem;
+}
+
+.hi-title {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.15;
+  margin: 0;
+}
+
+.hi-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+
 .hi-vintage-divider {
-  color: var(--wood);
-  opacity: 0.4;
-  font-size: 0.9rem;
-  letter-spacing: 0.5em;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  opacity: 0.6;
+  margin: 0.25rem 0;
+}
+
+.hi-aside {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.82rem;
+  color: var(--ink-light);
+  line-height: 1.6;
+  max-width: 22ch;
+  text-align: center;
+}
+
+.hi-drop-cap {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  color: var(--ink);
+  font-weight: 300;
+  margin-bottom: 0.25rem;
+}
+
+.hi-drop-cap strong {
+  font-weight: 700;
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
 }
 
 .hi-text {
   font-family: var(--font-sans);
+  font-size: 0.88rem;
+  line-height: 1.75;
   color: var(--ink);
-  font-size: 0.92rem;
-  line-height: 1.65;
-  margin-bottom: 1.2rem;
-  opacity: 0.85;
-  text-align: justify;
+  font-weight: 300;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.hi-text strong {
+  font-weight: 700;
 }
 
 .hi-text em {
-  font-family: var(--font-serif);
   font-style: italic;
+  font-family: var(--font-serif);
 }
 
-/* ── Anillos Centrales ───────────────────────────────────── */
+.hi-pull-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--accent);
+  border-left: 2px solid var(--accent);
+  padding-left: 1rem;
+  margin-top: auto;
+}
+
+/* ── Photo Placeholder ───────────────────────────────────── */
+.hi-photo-placeholder {
+  width: 140px;
+  height: 170px;
+  border: 1.5px dashed rgba(30,18,9,0.2);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: rgba(0,0,0,0.03);
+  margin-top: 1rem;
+}
+
+.hi-photo-label {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--ink);
+  opacity: 0.4;
+  line-height: 1.5;
+}
+
+/* ── Rings ───────────────────────────────────────────────── */
 .hi-rings {
   position: absolute;
-  left: 50%; 
-  top: -6px; 
-  bottom: -10px;
+  left: 50%;
+  top: -6px; bottom: -10px;
   width: 32px;
   transform: translateX(-50%);
   z-index: 30;
@@ -187,31 +264,29 @@
 }
 
 .hi-ring {
-  width: 28px; 
-  height: 42px;
-  border-radius: 14px; 
+  width: 28px; height: 42px;
+  border-radius: 14px;
   border: 5px solid var(--ring);
   background: transparent;
   flex-shrink: 0;
   box-shadow: inset 2px 0 4px rgba(0,0,0,0.2), 2px 3px 5px rgba(0,0,0,0.3);
 }
 
-/* ── Marcadores (Bookmarks) ──────────────────────────────── */
+/* ── Bookmarks ───────────────────────────────────────────── */
 .hi-bookmarks {
   position: absolute;
   z-index: 10;
   left: 100%;
-  top: 0;
-  bottom: 0;
+  top: 0; bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   padding: 20px 0;
-  margin-left: -6px; 
+  margin-left: -6px;
 }
 
 .hi-bookmark {
-  position: relative; 
+  position: relative;
   display: block;
   background: var(--bm-bg);
   color: #fff;
@@ -224,14 +299,12 @@
   white-space: nowrap;
   text-align: center;
   padding: 0 20px;
-  
-  width: 145px; 
+  width: 145px;
   height: 38px;
   line-height: 38px;
   border-radius: 0 6px 6px 0;
   box-shadow: 2px 2px 8px rgba(0,0,0,0.25);
   margin-bottom: 6px;
-  
   transition: width 0.3s var(--ease), padding-left 0.3s var(--ease), box-shadow 0.3s var(--ease), background-color 0.2s ease;
   animation: hiPeekIn 0.5s var(--ease) both;
   animation-delay: calc(0.2s + var(--i) * 0.08s);
@@ -240,10 +313,9 @@
 .hi-bookmark::before {
   content: '';
   position: absolute;
-  right: 99%; 
-  top: 0;
-  bottom: 0;
-  width: 20px; 
+  right: 99%;
+  top: 0; bottom: 0;
+  width: 20px;
   background: var(--bm-bg);
   pointer-events: none;
   transition: background-color 0.2s ease;
@@ -251,8 +323,8 @@
 
 .hi-bookmark:hover,
 .hi-bookmark:focus-visible {
-  width: 175px; 
-  padding-left: 30px; 
+  width: 175px;
+  padding-left: 30px;
   box-shadow: 6px 4px 18px rgba(0,0,0,0.4);
   background-color: #1d4ed8;
   outline: none;
@@ -263,34 +335,67 @@
   background-color: #1d4ed8;
 }
 
-.hi-page-arrows {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 1.5rem;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
+/* ── Arrows ──────────────────────────────────────────────── */
 .hi-arrow {
   position: absolute;
   bottom: 1rem;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   cursor: pointer;
-  color: var(--hi-ink, #1e1209);
-  opacity: 0.4;
+  color: var(--ink);
+  opacity: 0.35;
   transition: opacity 0.2s;
   padding: 0.5rem;
 }
 
-.hi-arrow:hover { opacity: 1; }
+.hi-arrow:hover { opacity: 0.9; }
 .hi-arrow-left  { left: 1rem; }
 .hi-arrow-right { right: 1rem; }
 
-/* ── Animaciones ─────────────────────────────────────────── */
+/* ── Page indicator tabs ─────────────────────────────────── */
+.hi-page-tabs {
+  position: absolute;
+  bottom: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  z-index: 10;
+}
+
+.hi-page-tab {
+  background: var(--bm-bg);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  width: 32px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  padding: 0;
+  border-radius: 0 0 4px 4px;
+  opacity: 0.55;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  transition: opacity 0.2s, transform 0.2s, background-color 0.2s;
+}
+
+.hi-page-tab:hover {
+  opacity: 0.85;
+  transform: translateY(3px);
+}
+
+.hi-page-tab--active {
+  opacity: 1;
+  background-color: #1d4ed8;
+  transform: translateY(4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+/* ── Animations ──────────────────────────────────────────── */
 @keyframes hiRiseUp {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -308,52 +413,17 @@
 
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .hi-journal.open-book {
-    width: 90vw;
-    margin-right: 0;
-  }
-  .hi-current-tab {
-    position: relative;
-    top: auto;
-    left: auto;
-    margin: 0 auto 1rem;
-  }
+  .hi-journal.open-book { width: 90vw; margin-right: 0; }
+  .hi-current-tab { position: relative; top: auto; left: auto; margin: 0 auto 1rem; }
 }
 
 @media (max-width: 650px) {
-  .hi-journal.open-book {
-    flex-direction: column;
-    width: 100%;
-  }
-  .hi-book-body {
-    flex-direction: column;
-  }
-  .hi-rings {
-    display: none; 
-  }
-  .hi-page-left {
-    border-right: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    background-image: none;
-  }
-  .hi-bookmarks {
-    position: relative;
-    left: auto;
-    top: auto;
-    bottom: auto;
-    width: 100%;
-    margin-left: 0;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 12px 0 0;
-    gap: 6px;
-  }
-  .hi-bookmark {
-    width: auto;
-    border-radius: 4px;
-    margin-bottom: 0;
-    animation: none;
-    padding: 0 16px;
-  }
+  .hi-journal.open-book { flex-direction: column; width: 100%; }
+  .hi-book-body { flex-direction: column; }
+  .hi-rings { display: none; }
+  .hi-page-left { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); background-image: none; }
+  .hi-bookmarks { position: relative; left: auto; top: auto; bottom: auto; width: 100%; margin-left: 0; flex-direction: row; flex-wrap: wrap; padding: 12px 0 0; gap: 6px; }
+  .hi-bookmark { width: auto; border-radius: 4px; margin-bottom: 0; animation: none; padding: 0 16px; }
   .hi-bookmark::before { display: none; }
+  .hi-scene { padding: 2rem 1rem; }
 }
