@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400;0,700;1,400&family=Lato:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Special+Elite&display=swap');
 
 :root {
   --wood:         #7a4f2d;
@@ -6,16 +6,24 @@
   --cover-mid:    #c9a882;
   --cover-dark:   #a07850;
   --cover-shadow: #7a5538;
-  --pa-page-l:    #f2ebd9; 
+  --pa-page-l:    #f2ebd9;
   --pa-page-r:    #f5efe3;
   --ring:         #c0b090;
   --bm-bg:        #2563b8;
   --ink:          #1e1209;
+  --ink-light:    #5a4a38;
+  --accent:       #8b4513;
+  --ticket-bg:    #fdf8f0;
+  --ticket-edge:  #e8dcc8;
   --font-serif:   'Playfair Display', Georgia, serif;
   --font-sans:    'Lato', sans-serif;
+  --font-ticket:  'Special Elite', 'Courier New', monospace;
   --ease:         cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ── Scene ───────────────────────────────────────────────── */
 .pa-scene {
   min-height: 100vh;
   display: flex;
@@ -23,11 +31,9 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  
-  /* PROTECCIÓN ANTI-CORTE: Salvaguarda el crecimiento horizontal de las pestañas */
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 3rem 6rem 3rem 3rem; 
+  padding: 3rem 6rem 4rem 3rem;
   font-family: var(--font-sans);
 }
 
@@ -43,7 +49,7 @@
     linear-gradient(150deg, #8b5e35 0%, #5c3a1e 50%, #3b2510 100%);
 }
 
-/* ── Pestaña Indicadora ──────────────────────────────────── */
+/* ── Current Tab ─────────────────────────────────────────── */
 .pa-current-tab {
   position: absolute;
   z-index: 20;
@@ -57,149 +63,420 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  
-  top: calc(50vh - 287px); 
-  left: calc(50% + 140px); 
-  
+  top: calc(50vh - 287px);
+  left: calc(50% + 140px);
   animation: paFadeDown 0.5s var(--ease) both;
 }
 
 .pa-current-tab__dot {
-  width: 6px; 
-  height: 6px;
+  width: 6px; height: 6px;
   border-radius: 50%;
   background: rgba(255,255,255,0.6);
   flex-shrink: 0;
 }
 
-/* ── Contenedor del Libro ────────────────────────────────── */
+/* ── Journal ─────────────────────────────────────────────── */
 .pa-journal.open-book {
-  position: relative; 
+  position: relative;
   z-index: 1;
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  width: 840px; 
+  width: 840px;
   min-height: 520px;
-  
-  /* Colchón derecho de seguridad */
   margin-right: 40px;
   animation: paRiseUp 0.7s var(--ease) 0.1s both;
 }
 
-/* ── Tapa Trasera Extendida ──────────────────────────────── */
 .pa-back-cover {
   position: absolute;
-  inset: -6px -10px -10px -10px; 
+  inset: -6px -10px -10px -10px;
   background: linear-gradient(145deg, var(--cover-light) 0%, var(--cover-mid) 50%, var(--cover-dark) 100%);
   border-radius: 6px;
   z-index: 1;
   box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
 
-/* ── Páginas Internas ────────────────────────────────────── */
+/* ── Book Body ───────────────────────────────────────────── */
 .pa-book-body {
-    position: relative;
+  position: relative;
   z-index: 5;
   width: 100%;
   display: flex;
-  background: var(--ac-page-r);
+  background: var(--pa-page-r);
   border-radius: 4px;
-  overflow: visible; /* changed from hidden — allows 3D flip to show */
+  overflow: visible;
   box-shadow: inset 0 0 40px rgba(0,0,0,0.05);
 }
 
 .pa-book-page {
   flex: 1;
-  padding: 3rem 2.5rem;
+  padding: 1.5rem 1.5rem 3rem;
   display: flex;
   flex-direction: column;
   position: relative;
+  min-height: 520px;
 }
 
 .pa-page-left {
   background: var(--pa-page-l);
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-  background-image: linear-gradient(to right, transparent 90%, rgba(0,0,0,0.08) 100%);
+  border-right: 1px solid rgba(0,0,0,0.08);
+  background-image: linear-gradient(to right, transparent 90%, rgba(0,0,0,0.06) 100%);
 }
 
 .pa-page-right {
   background: var(--pa-page-r);
-  background-image: linear-gradient(to left, transparent 95%, rgba(0,0,0,0.05) 100%);
+  background-image: linear-gradient(to left, transparent 95%, rgba(0,0,0,0.04) 100%);
 }
 
 .pa-page-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.75rem;
+}
+
+.pa-page-content--tickets {
+  justify-content: flex-start;
+}
+
+.pa-page-header {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+/* ── Typography ──────────────────────────────────────────── */
+.pa-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: block;
+}
+
+.pa-title {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.1;
+  margin: 0.1rem 0 0.3rem;
+}
+
+.pa-vintage-divider {
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  opacity: 0.5;
+}
+
+/* ── Ticket Grid ─────────────────────────────────────────── */
+.pa-ticket-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+}
+
+/* ── Mini Ticket ─────────────────────────────────────────── */
+.pa-ticket-mini {
   position: relative;
+  width: 100%;
+  max-width: 200px;
+  background: var(--ticket-bg);
+  border-radius: 4px;
+  box-shadow:
+    2px 2px 6px rgba(0,0,0,0.18),
+    0 0 0 1px var(--ticket-edge);
+  cursor: pointer;
+  transform: rotate(var(--rotation, 0deg));
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  overflow: hidden;
+}
+
+.pa-ticket-mini:hover {
+  transform: rotate(0deg) scale(1.04);
+  box-shadow: 4px 6px 16px rgba(0,0,0,0.3), 0 0 0 1px var(--ticket-edge);
+  z-index: 5;
+}
+
+/* Scrapbook tape strip */
+.pa-ticket-tape {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1deg);
+  width: 55px;
+  height: 18px;
+  background: var(--tape-color, #e8e0d0);
+  opacity: 0.75;
   z-index: 10;
+  border-radius: 1px;
+}
+
+.pa-ticket-tape--expanded {
+  width: 80px;
+  height: 22px;
+  top: -8px;
+}
+
+/* Placeholder image background */
+.pa-ticket-bg-placeholder {
+  width: 100%;
+  height: 90px;
+  background: linear-gradient(135deg, #e8dcc8 0%, #d4c8b0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px dashed var(--ticket-edge);
+}
+
+.pa-ticket-bg-label {
+  font-size: 1.4rem;
+  opacity: 0.5;
+}
+
+/* Perforated edge */
+.pa-ticket-perforation {
+  width: 100%;
+  height: 8px;
+  background-image: radial-gradient(circle at 4px 50%, var(--pa-page-l) 3px, transparent 3px);
+  background-size: 10px 8px;
+  background-color: var(--ticket-edge);
+}
+
+.pa-ticket-perforation--horizontal {
+  height: 12px;
+  background-size: 12px 12px;
+}
+
+/* Mini info strip */
+.pa-ticket-mini-info {
+  padding: 0.5rem 0.65rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pa-ticket-mini-name {
+  font-family: var(--font-ticket);
+  font-size: 0.72rem;
+  color: var(--ink);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.pa-ticket-mini-tipo {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.8;
+}
+
+.pa-ticket-mini-precio {
+  font-family: var(--font-ticket);
+  font-size: 0.68rem;
+  color: var(--ink-light);
+  margin-top: 2px;
+}
+
+/* ── Expanded Ticket Modal ───────────────────────────────── */
+.pa-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 18, 9, 0.6);
+  backdrop-filter: blur(3px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  animation: paFadeIn 0.2s ease both;
+}
+
+.pa-ticket-expanded {
+  position: relative;
+  background: var(--ticket-bg);
+  border-radius: 6px;
+  width: min(520px, 90vw);
+  box-shadow: 6px 8px 40px rgba(0,0,0,0.5), 0 0 0 1px var(--ticket-edge);
+  overflow: hidden;
+  animation: paScaleIn 0.3s var(--ease) both;
+}
+
+/* Expanded image placeholder */
+.pa-ticket-expanded-bg {
+  position: relative;
+  width: 100%;
+  height: 160px;
+  background: linear-gradient(135deg, #d4c8b0 0%, #c4b89a 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
+  border-bottom: 1px dashed var(--ticket-edge);
 }
 
-/* ── Tipografía y Cards de Paquetes ──────────────────────── */
-.pa-title {
-  font-family: var(--font-serif);
-  color: var(--ink);
-  font-size: 2.4rem;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
-  text-align: center;
+.pa-ticket-expanded-title-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.75rem 1.25rem;
+  background: linear-gradient(to top, rgba(30,18,9,0.65) 0%, transparent 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
 }
 
-.pa-vintage-divider {
-  color: var(--wood);
-  opacity: 0.4;
-  font-size: 0.9rem;
-  letter-spacing: 0.5em;
+.pa-ticket-expanded-name {
+  font-family: var(--font-ticket);
+  font-size: 1.25rem;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
 }
 
-.pa-text {
+.pa-ticket-expanded-tipo {
   font-family: var(--font-sans);
-  color: var(--ink);
-  font-size: 0.92rem;
-  line-height: 1.65;
-  margin-bottom: 1.5rem;
-  opacity: 0.85;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+  background: rgba(139,69,19,0.7);
+  padding: 2px 8px;
+  border-radius: 2px;
 }
 
-.pa-packages-grid {
-  width: 100%;
+/* Expanded body */
+.pa-ticket-expanded-body {
+  padding: 1.25rem 1.5rem 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1rem;
 }
 
-.pa-package-card {
-  border-left: 3px solid var(--cover-dark);
-  padding-left: 1rem;
+.pa-ticket-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.25rem;
+}
+
+.pa-ticket-detail {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 2px;
+  border-bottom: 1px solid var(--ticket-edge);
+  padding-bottom: 0.5rem;
 }
 
-.pa-card-title {
-  font-family: var(--font-serif);
-  color: var(--ink);
-  font-weight: 700;
-  font-size: 1rem;
-}
-
-.pa-card-desc {
+.pa-ticket-detail-label {
   font-family: var(--font-sans);
-  color: var(--ink);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.8;
+  display: block;
+}
+
+.pa-ticket-detail-value {
+  font-family: var(--font-ticket);
   font-size: 0.85rem;
-  line-height: 1.4;
-  opacity: 0.75;
+  color: var(--ink);
 }
 
-/* ── Anillos Centrales ───────────────────────────────────── */
+.pa-ticket-amenidades {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.pa-ticket-amenidades-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.pa-ticket-amenidades-list li {
+  font-family: var(--font-ticket);
+  font-size: 0.75rem;
+  color: var(--ink);
+  background: var(--pa-page-l);
+  border: 1px solid var(--ticket-edge);
+  border-radius: 2px;
+  padding: 2px 8px;
+}
+
+/* Barcode placeholder */
+.pa-ticket-barcode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--ticket-edge);
+}
+
+.pa-ticket-barcode-bars {
+  width: 160px;
+  height: 28px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--ink) 0px, var(--ink) 2px,
+    transparent 2px, transparent 4px,
+    var(--ink) 4px, var(--ink) 5px,
+    transparent 5px, transparent 8px,
+    var(--ink) 8px, var(--ink) 11px,
+    transparent 11px, transparent 14px
+  );
+  opacity: 0.3;
+}
+
+.pa-ticket-barcode-num {
+  font-family: var(--font-ticket);
+  font-size: 0.58rem;
+  color: var(--ink-light);
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+
+/* Close button */
+.pa-ticket-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: rgba(30,18,9,0.5);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  z-index: 10;
+}
+
+.pa-ticket-close:hover { background: rgba(30,18,9,0.8); }
+
+/* ── Rings ───────────────────────────────────────────────── */
 .pa-rings {
   position: absolute;
-  left: 50%; 
-  top: -6px; 
-  bottom: -10px;
+  left: 50%;
+  top: -6px; bottom: -10px;
   width: 32px;
   transform: translateX(-50%);
   z-index: 30;
@@ -211,31 +488,29 @@
 }
 
 .pa-ring {
-  width: 28px; 
-  height: 42px;
-  border-radius: 14px; 
+  width: 28px; height: 42px;
+  border-radius: 14px;
   border: 5px solid var(--ring);
   background: transparent;
   flex-shrink: 0;
   box-shadow: inset 2px 0 4px rgba(0,0,0,0.2), 2px 3px 5px rgba(0,0,0,0.3);
 }
 
-/* ── Marcadores (Bookmarks) ──────────────────────────────── */
+/* ── Side Bookmarks ──────────────────────────────────────── */
 .pa-bookmarks {
   position: absolute;
   z-index: 10;
   left: 100%;
-  top: 0;
-  bottom: 0;
+  top: 0; bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   padding: 20px 0;
-  margin-left: -6px; 
+  margin-left: -6px;
 }
 
 .pa-bookmark {
-  position: relative; 
+  position: relative;
   display: block;
   background: var(--bm-bg);
   color: #fff;
@@ -248,14 +523,12 @@
   white-space: nowrap;
   text-align: center;
   padding: 0 20px;
-  
-  width: 145px; 
+  width: 145px;
   height: 38px;
   line-height: 38px;
   border-radius: 0 6px 6px 0;
   box-shadow: 2px 2px 8px rgba(0,0,0,0.25);
   margin-bottom: 6px;
-  
   transition: width 0.3s var(--ease), padding-left 0.3s var(--ease), box-shadow 0.3s var(--ease), background-color 0.2s ease;
   animation: paPeekIn 0.5s var(--ease) both;
   animation-delay: calc(0.2s + var(--i) * 0.08s);
@@ -264,10 +537,9 @@
 .pa-bookmark::before {
   content: '';
   position: absolute;
-  right: 99%; 
-  top: 0;
-  bottom: 0;
-  width: 20px; 
+  right: 99%;
+  top: 0; bottom: 0;
+  width: 20px;
   background: var(--bm-bg);
   pointer-events: none;
   transition: background-color 0.2s ease;
@@ -275,45 +547,68 @@
 
 .pa-bookmark:hover,
 .pa-bookmark:focus-visible {
-  width: 175px; 
-  padding-left: 30px; 
+  width: 175px;
+  padding-left: 30px;
   box-shadow: 6px 4px 18px rgba(0,0,0,0.4);
   background-color: #1d4ed8;
   outline: none;
 }
 
 .pa-bookmark:hover::before,
-.pa-bookmark:focus-visible::before {
-  background-color: #1d4ed8;
-}
+.pa-bookmark:focus-visible::before { background-color: #1d4ed8; }
 
-.pa-page-arrows {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 1.5rem;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
+/* ── Arrows ──────────────────────────────────────────────── */
 .pa-arrow {
   position: absolute;
   bottom: 1rem;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   cursor: pointer;
-  color: var(--pa-ink, #1e1209);
-  opacity: 0.4;
+  color: var(--ink);
+  opacity: 0.35;
   transition: opacity 0.2s;
   padding: 0.5rem;
 }
 
-.pa-arrow:hover { opacity: 1; }
+.pa-arrow:hover { opacity: 0.9; }
 .pa-arrow-left  { left: 1rem; }
 .pa-arrow-right { right: 1rem; }
-/* ── Animaciones ─────────────────────────────────────────── */
+
+/* ── Page tabs ───────────────────────────────────────────── */
+.pa-page-tabs {
+  position: absolute;
+  bottom: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  z-index: 10;
+}
+
+.pa-page-tab {
+  background: var(--bm-bg);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  width: 32px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  padding: 0;
+  border-radius: 0 0 4px 4px;
+  opacity: 0.55;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  transition: opacity 0.2s, transform 0.2s, background-color 0.2s;
+}
+
+.pa-page-tab:hover { opacity: 0.85; transform: translateY(3px); }
+.pa-page-tab--active { opacity: 1; background-color: #1d4ed8; transform: translateY(4px); box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+
+/* ── Animations ──────────────────────────────────────────── */
 @keyframes paRiseUp {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -329,54 +624,30 @@
   to   { opacity: 1; }
 }
 
+@keyframes paFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes paScaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .pa-journal.open-book {
-    width: 90vw;
-    margin-right: 0;
-  }
-  .pa-current-tab {
-    position: relative;
-    top: auto;
-    left: auto;
-    margin: 0 auto 1rem;
-  }
+  .pa-journal.open-book { width: 90vw; margin-right: 0; }
+  .pa-current-tab { position: relative; top: auto; left: auto; margin: 0 auto 1rem; }
 }
 
 @media (max-width: 650px) {
-  .pa-journal.open-book {
-    flex-direction: column;
-    width: 100%;
-  }
-  .pa-book-body {
-    flex-direction: column;
-  }
-  .pa-rings {
-    display: none; 
-  }
-  .pa-page-left {
-    border-right: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    background-image: none;
-  }
-  .pa-bookmarks {
-    position: relative;
-    left: auto;
-    top: auto;
-    bottom: auto;
-    width: 100%;
-    margin-left: 0;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 12px 0 0;
-    gap: 6px;
-  }
-  .pa-bookmark {
-    width: auto;
-    border-radius: 4px;
-    margin-bottom: 0;
-    animation: none;
-    padding: 0 16px;
-  }
+  .pa-journal.open-book { flex-direction: column; width: 100%; }
+  .pa-book-body { flex-direction: column; }
+  .pa-rings { display: none; }
+  .pa-page-left { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); background-image: none; }
+  .pa-ticket-grid { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .pa-bookmarks { position: relative; left: auto; top: auto; bottom: auto; width: 100%; margin-left: 0; flex-direction: row; flex-wrap: wrap; padding: 12px 0 0; gap: 6px; }
+  .pa-bookmark { width: auto; border-radius: 4px; margin-bottom: 0; animation: none; padding: 0 16px; }
   .pa-bookmark::before { display: none; }
+  .pa-scene { padding: 2rem 1rem; }
 }
