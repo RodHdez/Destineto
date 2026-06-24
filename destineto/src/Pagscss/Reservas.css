@@ -1,21 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght=0,400;0,700;1,400&family=Lato:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Special+Elite&display=swap');
 
 :root {
   --wood:         #7a4f2d;
   --cover-light:  #d4ae8a;
   --cover-mid:    #c9a882;
   --cover-dark:   #a07850;
-  --cover-shadow: #7a5538;
-  --re-page-l:    #f2ebd9; 
+  --re-page-l:    #f2ebd9;
   --re-page-r:    #f5efe3;
   --ring:         #c0b090;
   --bm-bg:        #2563b8;
   --ink:          #1e1209;
+  --ink-light:    #5a4a38;
+  --accent:       #8b4513;
+  --success:      #2d6a2d;
   --font-serif:   'Playfair Display', Georgia, serif;
   --font-sans:    'Lato', sans-serif;
+  --font-ticket:  'Special Elite', 'Courier New', monospace;
   --ease:         cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ── Scene ───────────────────────────────────────────────── */
 .re-scene {
   min-height: 100vh;
   display: flex;
@@ -23,11 +29,9 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  
-  /* PROTECCIÓN ANTI-CORTE: Evita cortes bruscos al expandir marcadores */
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 3rem 6rem 3rem 3rem; 
+  padding: 3rem 6rem 4rem 3rem;
   font-family: var(--font-sans);
 }
 
@@ -43,7 +47,7 @@
     linear-gradient(150deg, #8b5e35 0%, #5c3a1e 50%, #3b2510 100%);
 }
 
-/* ── Pestaña Indicadora ──────────────────────────────────── */
+/* ── Current Tab ─────────────────────────────────────────── */
 .re-current-tab {
   position: absolute;
   z-index: 20;
@@ -57,145 +61,129 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  
-  top: calc(50vh - 287px); 
-  left: calc(50% + 140px); 
-  
+  top: calc(50vh - 287px);
+  left: calc(50% + 140px);
   animation: reFadeDown 0.5s var(--ease) both;
 }
 
 .re-current-tab__dot {
-  width: 6px; 
-  height: 6px;
+  width: 6px; height: 6px;
   border-radius: 50%;
   background: rgba(255,255,255,0.6);
   flex-shrink: 0;
 }
 
-/* ── Contenedor del Libro ────────────────────────────────── */
+/* ── Journal ─────────────────────────────────────────────── */
 .re-journal.open-book {
-  position: relative; 
+  position: relative;
   z-index: 1;
   display: flex;
   flex-direction: row;
   align-items: stretch;
-  width: 840px; 
+  width: 840px;
   min-height: 520px;
-  
-  /* Separación protectora en el flanco derecho */
   margin-right: 40px;
   animation: reRiseUp 0.7s var(--ease) 0.1s both;
 }
 
-/* ── Tapa Trasera Extendida ──────────────────────────────── */
 .re-back-cover {
   position: absolute;
-  inset: -6px -10px -10px -10px; 
+  inset: -6px -10px -10px -10px;
   background: linear-gradient(145deg, var(--cover-light) 0%, var(--cover-mid) 50%, var(--cover-dark) 100%);
   border-radius: 6px;
   z-index: 1;
   box-shadow: 0 15px 35px rgba(0,0,0,0.5);
 }
 
-/* ── Páginas Internas ────────────────────────────────────── */
+/* ── Book Body ───────────────────────────────────────────── */
 .re-book-body {
-   position: relative;
+  position: relative;
   z-index: 5;
   width: 100%;
   display: flex;
-  background: var(--ac-page-r);
+  background: var(--re-page-r);
   border-radius: 4px;
-  overflow: visible; /* changed from hidden — allows 3D flip to show */
+  overflow: visible;
   box-shadow: inset 0 0 40px rgba(0,0,0,0.05);
 }
 
 .re-book-page {
   flex: 1;
-  padding: 3rem 2.5rem;
+  padding: 1.5rem 1.5rem 3rem;
   display: flex;
   flex-direction: column;
   position: relative;
+  min-height: 520px;
 }
 
 .re-page-left {
   background: var(--re-page-l);
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
-  background-image: linear-gradient(to right, transparent 90%, rgba(0,0,0,0.08) 100%);
+  border-right: 1px solid rgba(0,0,0,0.08);
+  background-image: linear-gradient(to right, transparent 90%, rgba(0,0,0,0.06) 100%);
 }
 
 .re-page-right {
   background: var(--re-page-r);
-  background-image: linear-gradient(to left, transparent 95%, rgba(0,0,0,0.05) 100%);
+  background-image: linear-gradient(to left, transparent 95%, rgba(0,0,0,0.04) 100%);
 }
 
+/* ── Page Content ────────────────────────────────────────── */
 .re-page-content {
-  position: relative;
-  z-index: 10;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  gap: 0.8rem;
+}
+
+.re-page-content--top {
+  justify-content: flex-start;
+}
+
+.re-page-content--centered {
   align-items: center;
   justify-content: center;
-  height: 100%;
-  width: 100%;
-}
-
-/* ── Tipografía y Elementos de la Izquierda ──────────────── */
-.re-title {
-  font-family: var(--font-serif);
-  color: var(--ink);
-  font-size: 2.4rem;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
   text-align: center;
+  gap: 1.2rem;
 }
 
-.re-vintage-divider {
-  color: var(--wood);
-  opacity: 0.4;
-  font-size: 0.9rem;
-  letter-spacing: 0.5em;
-  margin-bottom: 1.5rem;
-}
-
-.re-left-note {
+/* ── Section title ───────────────────────────────────────── */
+.re-section-title {
   font-family: var(--font-serif);
-  font-style: italic;
+  font-size: 1.1rem;
+  font-weight: 400;
   color: var(--ink);
-  opacity: 0.7;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  text-align: center;
-  padding: 0 1rem;
+  margin: 0 0 0.2rem;
+  border-bottom: 1px solid rgba(30,18,9,0.1);
+  padding-bottom: 0.3rem;
 }
 
-/* ── Estilos de Formulario (Página Derecha) ───────────────── */
+/* ── Form elements ───────────────────────────────────────── */
 .re-form {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 0.7rem;
+  width: 100%;
 }
 
 .re-form-group {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.2rem;
   width: 100%;
 }
 
 .re-form-row {
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   width: 100%;
 }
 
 .re-label {
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: 0.62rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--ink);
-  opacity: 0.8;
+  letter-spacing: 0.1em;
+  color: var(--accent);
   font-weight: 700;
 }
 
@@ -203,10 +191,10 @@
   font-family: var(--font-sans);
   background: transparent;
   border: none;
-  border-bottom: 1px dashed rgba(30,18,9,0.4);
-  padding: 0.4rem 0.2rem;
+  border-bottom: 1px dashed rgba(30,18,9,0.3);
+  padding: 0.3rem 0.1rem;
   color: var(--ink);
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   width: 100%;
   transition: border-color 0.2s ease;
 }
@@ -217,34 +205,376 @@
   border-bottom-color: var(--bm-bg);
 }
 
-.re-submit-btn {
-  margin-top: 0.8rem;
+/* ── Date inputs row ─────────────────────────────────────── */
+.re-date-inputs {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+/* ── Calendar ────────────────────────────────────────────── */
+.re-calendar {
+  width: 100%;
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(30,18,9,0.1);
+  border-radius: 4px;
+  padding: 0.6rem;
+  flex: 1;
+}
+
+.re-calendar-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.re-cal-title {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.re-cal-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 1rem;
+  padding: 0 0.3rem;
+  line-height: 1;
+}
+
+.re-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.re-cal-dayname {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  text-align: center;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 0;
+}
+
+.re-cal-day {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  text-align: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 2px;
+  border-radius: 3px;
+  color: var(--ink);
+  transition: background 0.15s, color 0.15s;
+}
+
+.re-cal-day:hover { background: rgba(37,99,184,0.12); }
+
+.re-cal-day--from,
+.re-cal-day--to {
+  background: var(--bm-bg);
+  color: #fff;
+  border-radius: 3px;
+}
+
+.re-cal-day--range {
+  background: rgba(37,99,184,0.15);
+  border-radius: 0;
+}
+
+/* ── Booking preview ─────────────────────────────────────── */
+.re-booking-preview {
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(30,18,9,0.1);
+  border-radius: 4px;
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.re-preview-val {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  color: var(--ink);
+  font-style: italic;
+}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.re-proceed-btn {
+  width: 100%;
   background: var(--ink);
   color: var(--re-page-r);
   border: none;
   font-family: var(--font-sans);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 0.75rem;
+  padding: 0.65rem;
   border-radius: 4px;
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: background 0.2s, transform 0.2s;
 }
 
-.re-submit-btn:hover {
+.re-proceed-btn:hover:not(:disabled) {
   background: var(--bm-bg);
   transform: translateY(-1px);
 }
 
-/* ── Anillos Centrales ───────────────────────────────────── */
+.re-proceed-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ── Summary card ────────────────────────────────────────── */
+.re-summary-card {
+  background: rgba(255,255,255,0.45);
+  border: 1px solid rgba(30,18,9,0.1);
+  border-radius: 4px;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.re-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.re-summary-row--total {
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(30,18,9,0.1);
+}
+
+.re-summary-label {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.re-summary-val {
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  color: var(--ink);
+  text-align: right;
+  font-style: italic;
+}
+
+.re-summary-divider {
+  border: none;
+  border-top: 1px dashed rgba(30,18,9,0.15);
+  margin: 0.2rem 0;
+}
+
+/* ── Transfer info ───────────────────────────────────────── */
+.re-transfer-info {
+  background: rgba(255,255,255,0.4);
+  border: 1px dashed rgba(30,18,9,0.2);
+  border-radius: 4px;
+  padding: 0.6rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* ── Confirmation ────────────────────────────────────────── */
+.re-confirm-icon {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--success);
+  color: #fff;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(45,106,45,0.35);
+}
+
+.re-confirm-title {
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: var(--ink);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.re-confirm-text {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: var(--ink-light);
+  line-height: 1.6;
+  max-width: 24ch;
+}
+
+.re-confirm-num {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: center;
+}
+
+.re-confirm-code {
+  font-family: var(--font-ticket);
+  font-size: 1.1rem;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+}
+
+.re-new-booking-btn {
+  background: none;
+  border: 1px solid rgba(30,18,9,0.3);
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin-top: 0.5rem;
+}
+
+.re-new-booking-btn:hover { background: var(--ink); color: #fff; }
+
+/* ── Receipt ─────────────────────────────────────────────── */
+.re-receipt {
+  width: 100%;
+  background: #fdf8f0;
+  border: 1px solid #e8dcc8;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 2px 3px 10px rgba(0,0,0,0.12);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.re-receipt-header {
+  background: var(--ink);
+  color: #fff;
+  padding: 0.7rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.re-receipt-brand {
+  font-family: var(--font-ticket);
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+}
+
+.re-receipt-sub {
+  font-family: var(--font-sans);
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.re-receipt-perforation {
+  height: 10px;
+  background-image: radial-gradient(circle at 5px 50%, #fdf8f0 3.5px, #e8dcc8 3.5px);
+  background-size: 12px 10px;
+  background-color: #e8dcc8;
+}
+
+.re-receipt-body {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  flex: 1;
+}
+
+.re-receipt-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.re-receipt-row--total {
+  padding-top: 0.3rem;
+  border-top: 1px dashed #e8dcc8;
+}
+
+.re-receipt-label {
+  font-family: var(--font-sans);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.re-receipt-val {
+  font-family: var(--font-ticket);
+  font-size: 0.7rem;
+  color: var(--ink);
+  text-align: right;
+}
+
+.re-receipt-divider {
+  border: none;
+  border-top: 1px dashed #e8dcc8;
+  margin: 0.1rem 0;
+}
+
+.re-receipt-barcode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 0.5rem 1rem 0.7rem;
+  background: #fdf8f0;
+}
+
+.re-receipt-barcode-bars {
+  width: 140px; height: 24px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--ink) 0px, var(--ink) 2px,
+    transparent 2px, transparent 4px,
+    var(--ink) 4px, var(--ink) 5px,
+    transparent 5px, transparent 8px,
+    var(--ink) 8px, var(--ink) 11px,
+    transparent 11px, transparent 14px
+  );
+  opacity: 0.25;
+}
+
+.re-receipt-barcode-num {
+  font-family: var(--font-ticket);
+  font-size: 0.52rem;
+  color: var(--ink-light);
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+
+/* ── Rings ───────────────────────────────────────────────── */
 .re-rings {
   position: absolute;
-  left: 50%; 
-  top: -6px; 
-  bottom: -10px;
+  left: 50%;
+  top: -6px; bottom: -10px;
   width: 32px;
   transform: translateX(-50%);
   z-index: 30;
@@ -256,31 +586,29 @@
 }
 
 .re-ring {
-  width: 28px; 
-  height: 42px;
-  border-radius: 14px; 
+  width: 28px; height: 42px;
+  border-radius: 14px;
   border: 5px solid var(--ring);
   background: transparent;
   flex-shrink: 0;
   box-shadow: inset 2px 0 4px rgba(0,0,0,0.2), 2px 3px 5px rgba(0,0,0,0.3);
 }
 
-/* ── Marcadores (Bookmarks) ──────────────────────────────── */
+/* ── Side Bookmarks ──────────────────────────────────────── */
 .re-bookmarks {
   position: absolute;
   z-index: 10;
   left: 100%;
-  top: 0;
-  bottom: 0;
+  top: 0; bottom: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   padding: 20px 0;
-  margin-left: -6px; 
+  margin-left: -6px;
 }
 
 .re-bookmark {
-  position: relative; 
+  position: relative;
   display: block;
   background: var(--bm-bg);
   color: #fff;
@@ -293,14 +621,12 @@
   white-space: nowrap;
   text-align: center;
   padding: 0 20px;
-  
-  width: 145px; 
+  width: 145px;
   height: 38px;
   line-height: 38px;
   border-radius: 0 6px 6px 0;
   box-shadow: 2px 2px 8px rgba(0,0,0,0.25);
   margin-bottom: 6px;
-  
   transition: width 0.3s var(--ease), padding-left 0.3s var(--ease), box-shadow 0.3s var(--ease), background-color 0.2s ease;
   animation: rePeekIn 0.5s var(--ease) both;
   animation-delay: calc(0.2s + var(--i) * 0.08s);
@@ -309,10 +635,9 @@
 .re-bookmark::before {
   content: '';
   position: absolute;
-  right: 99%; 
-  top: 0;
-  bottom: 0;
-  width: 20px; 
+  right: 99%;
+  top: 0; bottom: 0;
+  width: 20px;
   background: var(--bm-bg);
   pointer-events: none;
   transition: background-color 0.2s ease;
@@ -320,46 +645,91 @@
 
 .re-bookmark:hover,
 .re-bookmark:focus-visible {
-  width: 175px; 
-  padding-left: 30px; 
+  width: 175px;
+  padding-left: 30px;
   box-shadow: 6px 4px 18px rgba(0,0,0,0.4);
   background-color: #1d4ed8;
   outline: none;
 }
 
 .re-bookmark:hover::before,
-.re-bookmark:focus-visible::before {
-  background-color: #1d4ed8;
-}
+.re-bookmark:focus-visible::before { background-color: #1d4ed8; }
 
-.re-page-arrows {
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 1.5rem;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
+/* ── Arrows ──────────────────────────────────────────────── */
 .re-arrow {
   position: absolute;
   bottom: 1rem;
   background: none;
   border: none;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   cursor: pointer;
-  color: var(--re-ink, #1e1209);
-  opacity: 0.4;
+  color: var(--ink);
+  opacity: 0.35;
   transition: opacity 0.2s;
   padding: 0.5rem;
 }
 
-.re-arrow:hover { opacity: 1; }
+.re-arrow:hover { opacity: 0.9; }
 .re-arrow-left  { left: 1rem; }
 .re-arrow-right { right: 1rem; }
 
-/* ── Animaciones ─────────────────────────────────────────── */
+/* ── Step indicator ──────────────────────────────────────── */
+.re-step-indicator {
+  position: absolute;
+  bottom: -48px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0;
+  z-index: 10;
+}
+
+.re-step {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  background: rgba(255,255,255,0.15);
+  border-radius: 0 0 4px 4px;
+  opacity: 0.5;
+  transition: opacity 0.3s, background 0.3s;
+}
+
+.re-step--active {
+  opacity: 1;
+  background: var(--bm-bg);
+  color: #fff;
+}
+
+.re-step--done {
+  opacity: 0.8;
+  background: var(--success);
+  color: #fff;
+}
+
+.re-step-num {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.re-step-label {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: inherit;
+}
+
+/* ── Animations ──────────────────────────────────────────── */
 @keyframes reRiseUp {
   from { opacity: 0; transform: translateY(28px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -377,52 +747,18 @@
 
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 900px) {
-  .re-journal.open-book {
-    width: 90vw;
-    margin-right: 0;
-  }
-  .re-current-tab {
-    position: relative;
-    top: auto;
-    left: auto;
-    margin: 0 auto 1rem;
-  }
+  .re-journal.open-book { width: 90vw; margin-right: 0; }
+  .re-current-tab { position: relative; top: auto; left: auto; margin: 0 auto 1rem; }
 }
 
 @media (max-width: 650px) {
-  .re-journal.open-book {
-    flex-direction: column;
-    width: 100%;
-  }
-  .re-book-body {
-    flex-direction: column;
-  }
-  .re-rings {
-    display: none; 
-  }
-  .re-page-left {
-    border-right: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    background-image: none;
-  }
-  .re-bookmarks {
-    position: relative;
-    left: auto;
-    top: auto;
-    bottom: auto;
-    width: 100%;
-    margin-left: 0;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 12px 0 0;
-    gap: 6px;
-  }
-  .re-bookmark {
-    width: auto;
-    border-radius: 4px;
-    margin-bottom: 0;
-    animation: none;
-    padding: 0 16px;
-  }
+  .re-journal.open-book { flex-direction: column; width: 100%; }
+  .re-book-body { flex-direction: column; }
+  .re-rings { display: none; }
+  .re-page-left { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.1); background-image: none; }
+  .re-bookmarks { position: relative; left: auto; top: auto; bottom: auto; width: 100%; margin-left: 0; flex-direction: row; flex-wrap: wrap; padding: 12px 0 0; gap: 6px; }
+  .re-bookmark { width: auto; border-radius: 4px; margin-bottom: 0; animation: none; padding: 0 16px; }
   .re-bookmark::before { display: none; }
+  .re-step-indicator { position: relative; bottom: auto; transform: none; margin-top: 1rem; flex-wrap: wrap; justify-content: center; }
+  .re-scene { padding: 2rem 1rem; }
 }
