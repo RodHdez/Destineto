@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import miniTicketImg from '../assets/Tickets Dvalentine.png'
+import expandedTicketImg from '../assets/Tickets DValentineExp.png'
 import '../Pagscss/Paquetes.css';
 import '../PageFlip.css' 
 import useFlipNavigate from '../useFlipNavigate';
@@ -21,111 +23,23 @@ interface Package {
   precio: string
   precioAdicional: string
   amenidades: string[]
-  precioRango: string  // for mini ticket display
-  tapeColor: string   // scrapbook tape color accent
+  precioRango: string
+  tapeColor: string
 }
 
 const packages: Package[] = [
-  {
-    id: 'mama',
-    nombre: 'Paquete Mamá',
-    tipo: 'Experiencia',
-    invitados: 'Por definir',
-    duracion: 'Por definir',
-    precio: 'Por definir',
-    precioAdicional: 'Por definir',
-    amenidades: ['Por definir'],
-    precioRango: 'Desde $XX',
-    tapeColor: '#e8a0a0',
-  },
-  {
-    id: 'papa',
-    nombre: 'Paquete Papá',
-    tipo: 'Experiencia',
-    invitados: 'Por definir',
-    duracion: 'Por definir',
-    precio: 'Por definir',
-    precioAdicional: 'Por definir',
-    amenidades: ['Por definir'],
-    precioRango: 'Desde $XX',
-    tapeColor: '#a0b4e8',
-  },
-  {
-    id: 'fiestas-agostinas',
-    nombre: 'Fiestas Agostinas',
-    tipo: 'Evento',
-    invitados: 'Por definir',
-    duracion: 'Por definir',
-    precio: 'Por definir',
-    precioAdicional: 'Por definir',
-    amenidades: ['Por definir'],
-    precioRango: 'Desde $XX',
-    tapeColor: '#e8d080',
-  },
-  {
-    id: 'secretaria',
-    nombre: 'Paquete Secretaria',
-    tipo: 'Experiencia',
-    invitados: 'Por definir',
-    duracion: 'Por definir',
-    precio: 'Por definir',
-    precioAdicional: 'Por definir',
-    amenidades: ['Por definir'],
-    precioRango: 'Desde $XX',
-    tapeColor: '#b0e0a0',
-  },
-  {
-    id: 'almuerzo-navidad',
-    nombre: 'Almuerzo Empresarial Navidad',
-    tipo: 'Evento',
-    invitados: 'Por definir',
-    duracion: 'Por definir',
-    precio: 'Por definir',
-    precioAdicional: 'Por definir',
-    amenidades: ['Por definir'],
-    precioRango: 'Desde $XX',
-    tapeColor: '#e8a0a0',
-  },
-  {
-    id: 'fin-de-ano',
-    nombre: 'Fin de Año',
-    tipo: 'Evento',
-    invitados: 'Por definir',
-    duracion: 'Por definir',
-    precio: 'Por definir',
-    precioAdicional: 'Por definir',
-    amenidades: ['Por definir'],
-    precioRango: 'Desde $XX',
-    tapeColor: '#c0a0e8',
-  },
-  {
-    id: 'cumple',
-    nombre: 'Cumpleaños',
-    tipo: 'Evento',
-    invitados: 'Por definir',
-    duracion: 'Por definir',
-    precio: 'Por definir',
-    precioAdicional: 'Por definir',
-    amenidades: ['Por definir'],
-    precioRango: 'Desde $XX',
-    tapeColor: '#e8c0a0',
-  },
-  {
-    id: 'boda',
-    nombre: 'Boda',
-    tipo: 'Evento',
-    invitados: 'Por definir',
-    duracion: 'Por definir',
-    precio: 'Por definir',
-    precioAdicional: 'Por definir',
-    amenidades: ['Por definir'],
-    precioRango: 'Desde $XX',
-    tapeColor: '#f0e0c0',
-  },
+  { id: 'mama', nombre: 'Paquete Mamá', tipo: 'Experiencia', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#e8a0a0' },
+  { id: 'papa', nombre: 'Paquete Papá', tipo: 'Experiencia', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#a0b4e8' },
+  { id: 'fiestas-agostinas', nombre: 'Fiestas Agostinas', tipo: 'Evento', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#e8d080' },
+  { id: 'secretaria', nombre: 'Paquete Secretaria', tipo: 'Experiencia', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#b0e0a0' },
+  { id: 'almuerzo-navidad', nombre: 'Almuerzo Empresarial Navidad', tipo: 'Evento', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#e8a0a0' },
+  { id: 'fin-de-ano', nombre: 'Fin de Año', tipo: 'Evento', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#c0a0e8' },
+  { id: 'cumple', nombre: 'Cumpleaños', tipo: 'Evento', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#e8c0a0' },
+  { id: 'boda', nombre: 'Boda', tipo: 'Evento', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#f0e0c0' },
 ]
 
-// Split into 2 spreads of 4 each
 const spreads = [packages.slice(0, 4), packages.slice(4, 8)]
+const rotations = [-2.5, 1.8, -1.2, 2.1, -1.8, 2.4, -2.0, 1.5]
 
 interface MiniTicketProps {
   pkg: Package
@@ -137,29 +51,29 @@ function MiniTicket({ pkg, onOpen, rotation }: MiniTicketProps) {
   return (
     <div
       className="pa-ticket-mini"
-      style={{ '--tape-color': pkg.tapeColor, '--rotation': `${rotation}deg` } as React.CSSProperties}
+      style={{ '--rotation': `${rotation}deg` } as React.CSSProperties}
       onClick={() => onOpen(pkg)}
       role="button"
       tabIndex={0}
       onKeyDown={e => e.key === 'Enter' && onOpen(pkg)}
       aria-label={`Ver detalles de ${pkg.nombre}`}
     >
-      {/* Scrapbook tape strip at top */}
-      <div className="pa-ticket-tape" aria-hidden="true" />
+      <div
+        className="pa-ticket-tape"
+        style={{ background: pkg.tapeColor }}
+        aria-hidden="true"
+      />
 
-      {/* Placeholder background image area */}
-      <div className="pa-ticket-bg-placeholder" aria-label="Imagen del paquete — por añadir">
-        <span className="pa-ticket-bg-label">📷</span>
-      </div>
-
-      {/* Ticket perforated edge */}
-      <div className="pa-ticket-perforation" aria-hidden="true" />
-
-      {/* Mini info strip */}
-      <div className="pa-ticket-mini-info">
-        <span className="pa-ticket-mini-name">{pkg.nombre}</span>
-        <span className="pa-ticket-mini-tipo">{pkg.tipo}</span>
-        <span className="pa-ticket-mini-precio">{pkg.precioRango}</span>
+      <div
+        className="pa-ticket-mini-shell"
+        style={{ backgroundImage: `url(${miniTicketImg})` }}
+      >
+        <div className="pa-ticket-mini-img-area">
+          <span className="pa-ticket-mini-name">{pkg.nombre}</span>
+          <span className="pa-ticket-mini-tipo">{pkg.tipo}</span>
+          <span className="pa-ticket-mini-precio">{pkg.precioRango}</span>
+        </div>
+        <div className="pa-ticket-mini-stub" aria-hidden="true" />
       </div>
     </div>
   )
@@ -172,30 +86,41 @@ interface ExpandedTicketProps {
 
 function ExpandedTicket({ pkg, onClose }: ExpandedTicketProps) {
   return (
-    <div className="pa-modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label={pkg.nombre}>
-      <div className="pa-ticket-expanded" onClick={e => e.stopPropagation()}>
-
-        {/* Tape at top */}
-        <div className="pa-ticket-tape pa-ticket-tape--expanded"
-          style={{ '--tape-color': pkg.tapeColor } as React.CSSProperties}
+    <div
+      className="pa-modal-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={pkg.nombre}
+    >
+      <div
+        className="pa-ticket-expanded"
+        style={{ backgroundImage: `url(${expandedTicketImg})` }}
+        onClick={e => e.stopPropagation()}
+      >
+        <div
+          className="pa-ticket-tape pa-ticket-tape--expanded"
+          style={{ background: pkg.tapeColor }}
           aria-hidden="true"
         />
 
-        {/* Header band — placeholder for image */}
-        <div className="pa-ticket-expanded-bg" aria-label="Imagen del paquete — por añadir">
-          <span className="pa-ticket-bg-label">📷 Imagen del Paquete</span>
-          <div className="pa-ticket-expanded-title-overlay">
-            <h2 className="pa-ticket-expanded-name">{pkg.nombre}</h2>
-            <span className="pa-ticket-expanded-tipo">{pkg.tipo}</span>
+        <div className="pa-ticket-exp-img-area">
+          <div className="pa-ticket-exp-img-label">
+            <span className="pa-ticket-exp-name">{pkg.nombre}</span>
+            <span className="pa-ticket-exp-tipo">{pkg.tipo}</span>
           </div>
         </div>
 
-        {/* Perforated divider */}
-        <div className="pa-ticket-perforation pa-ticket-perforation--horizontal" aria-hidden="true" />
-
-        {/* Details grid */}
-        <div className="pa-ticket-expanded-body">
+        <div className="pa-ticket-exp-content">
           <div className="pa-ticket-detail-grid">
+            <div className="pa-ticket-detail">
+              <span className="pa-ticket-detail-label">Nombre del Paquete</span>
+              <span className="pa-ticket-detail-value">{pkg.nombre}</span>
+            </div>
+            <div className="pa-ticket-detail">
+              <span className="pa-ticket-detail-label">Tipo de Reserva</span>
+              <span className="pa-ticket-detail-value">{pkg.tipo}</span>
+            </div>
             <div className="pa-ticket-detail">
               <span className="pa-ticket-detail-label">Número de Invitados</span>
               <span className="pa-ticket-detail-value">{pkg.invitados}</span>
@@ -222,12 +147,12 @@ function ExpandedTicket({ pkg, onClose }: ExpandedTicketProps) {
               ))}
             </ul>
           </div>
+        </div>
 
-          {/* Barcode placeholder */}
-          <div className="pa-ticket-barcode" aria-hidden="true">
-            <div className="pa-ticket-barcode-bars" />
-            <span className="pa-ticket-barcode-num">DESTINETO · {pkg.id.toUpperCase()}</span>
-          </div>
+        <div className="pa-ticket-exp-perforation" aria-hidden="true" />
+
+        <div className="pa-ticket-exp-barcode" aria-hidden="true">
+          <span className="pa-ticket-barcode-num">DESTINETO · {pkg.id.toUpperCase()}</span>
         </div>
 
         <button className="pa-ticket-close" onClick={onClose} aria-label="Cerrar">✕</button>
@@ -235,9 +160,6 @@ function ExpandedTicket({ pkg, onClose }: ExpandedTicketProps) {
     </div>
   )
 }
-
-// Slight random rotations for scrapbook feel — stable per ticket
-const rotations = [-2.5, 1.8, -1.2, 2.1, -1.8, 2.4, -2.0, 1.5]
 
 function Paquetes() {
   const flipTo = useFlipNavigate()
@@ -253,10 +175,8 @@ function Paquetes() {
     const right = document.querySelector('.flip-pages') as HTMLElement | null
     const left  = document.querySelector('.flip-pages-left') as HTMLElement | null
     if (!right || !left) { then(); return }
-
     ;[right, left].forEach(el => { el.style.animation = 'none' })
     void right.offsetHeight
-
     if (forward) {
       right.style.transition = 'transform 0.5s cubic-bezier(0.4,0,1,1), opacity 0.4s ease-in'
       right.style.transformOrigin = 'left center'
@@ -272,7 +192,6 @@ function Paquetes() {
       right.style.transition = 'opacity 0.3s ease-in'
       right.style.opacity = '0'
     }
-
     setTimeout(() => {
       then()
       right.style.transition = 'none'
@@ -305,8 +224,6 @@ function Paquetes() {
         <div className="pa-back-cover" aria-hidden="true" />
 
         <div className="pa-book-body">
-
-          {/* LEFT PAGE */}
           <div className="pa-book-page pa-page-left flip-pages-left">
             <div className="pa-page-content pa-page-content--tickets">
               <div className="pa-page-header">
@@ -316,12 +233,7 @@ function Paquetes() {
               </div>
               <div className="pa-ticket-grid">
                 {leftTickets.map((pkg, i) => (
-                  <MiniTicket
-                    key={pkg.id}
-                    pkg={pkg}
-                    onOpen={setSelected}
-                    rotation={rotations[offset + i]}
-                  />
+                  <MiniTicket key={pkg.id} pkg={pkg} onOpen={setSelected} rotation={rotations[offset + i]} />
                 ))}
               </div>
             </div>
@@ -330,17 +242,11 @@ function Paquetes() {
             )}
           </div>
 
-          {/* RIGHT PAGE */}
           <div className="pa-book-page pa-page-right flip-pages">
             <div className="pa-page-content pa-page-content--tickets">
               <div className="pa-ticket-grid">
                 {rightTickets.map((pkg, i) => (
-                  <MiniTicket
-                    key={pkg.id}
-                    pkg={pkg}
-                    onOpen={setSelected}
-                    rotation={rotations[offset + 2 + i]}
-                  />
+                  <MiniTicket key={pkg.id} pkg={pkg} onOpen={setSelected} rotation={rotations[offset + 2 + i]} />
                 ))}
               </div>
             </div>
@@ -348,7 +254,6 @@ function Paquetes() {
               <button className="pa-arrow pa-arrow-right" onClick={goNext}>→</button>
             )}
           </div>
-
         </div>
 
         <div className="pa-rings" aria-hidden="true">
@@ -370,7 +275,6 @@ function Paquetes() {
           ))}
         </nav>
 
-        {/* Page tabs */}
         <nav className="pa-page-tabs" aria-label="Página de paquetes">
           {spreads.map((_, i) => (
             <button
@@ -385,12 +289,11 @@ function Paquetes() {
         </nav>
       </div>
 
-      {/* Expanded ticket modal */}
       {selected && (
         <ExpandedTicket pkg={selected} onClose={() => setSelected(null)} />
       )}
     </div>
-  );
+  )
 }
 
 export default Paquetes;
