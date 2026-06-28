@@ -110,7 +110,7 @@
 
 .pa-book-page {
   flex: 1;
-  padding: 1.5rem 1.5rem 3rem;
+  padding: 1rem 1rem 3rem;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -173,9 +173,10 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  align-items: center;
+  align-items: stretch;
   flex: 1;
   justify-content: center;
+  width: 100%;
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -183,12 +184,8 @@
    ══════════════════════════════════════════════════════════ */
 .pa-ticket-mini {
   position: relative;
-  /*
-    Width/height tuned to match the ticket image proportions.
-    The image is horizontal: roughly 2.5:1 ratio.
-  */
   width: 100%;
-  max-width: 210px;
+  max-width: 100%;
   cursor: pointer;
   transform: rotate(var(--rotation, 0deg));
   transition: transform 0.2s var(--ease), filter 0.2s;
@@ -226,16 +223,11 @@
   Percentages match the image's visual split (~68% image / 32% stub).
 */
 .pa-ticket-mini-shell {
-  /*
-    IMPORTANT: set the background image here.
-    File must be in your /public folder.
-  */
-  background-image: url('/Tickets_Dvalentine.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
+  background-position: center;
   width: 100%;
-  /* height keeps the ticket image's aspect ratio (~1:2.5 inverted = 0.4) */
-  padding-top: 40%;
+  height: 130px;
   position: relative;
   border-radius: 6px;
 }
@@ -244,19 +236,18 @@
 .pa-ticket-mini-img-area {
   position: absolute;
   top: 0; left: 0;
-  /* occupies the left ~65% which is the image box area */
-  width: 65%;
+  width: 62%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 6% 5% 6% 8%;
-  gap: 2px;
+  padding: 10px 6px 10px 14px;
+  gap: 4px;
 }
 
 .pa-ticket-mini-name {
   font-family: var(--font-ticket);
-  font-size: 0.65rem;
+  font-size: 0.82rem;
   color: #5c1a3a;
   font-weight: 700;
   line-height: 1.2;
@@ -265,7 +256,7 @@
 
 .pa-ticket-mini-tipo {
   font-family: var(--font-sans);
-  font-size: 0.52rem;
+  font-size: 0.68rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #8b1a4a;
@@ -274,7 +265,7 @@
 
 .pa-ticket-mini-precio {
   font-family: var(--font-ticket);
-  font-size: 0.6rem;
+  font-size: 0.72rem;
   color: #5c1a3a;
   margin-top: 2px;
 }
@@ -306,19 +297,12 @@
 
 .pa-ticket-expanded {
   position: relative;
-  /*
-    Background: the expanded ticket image.
-    Vertical ticket, roughly 0.65:1 ratio (width:height).
-    File must be in /public.
-  */
-  background-image: url('/Tickets_DValentineExp.png');
-  background-size: 100% 100%;
+  background-size: contain;
   background-repeat: no-repeat;
+  background-position: center top;
   width: min(340px, 88vw);
-  /* padding-top sets height via aspect ratio: height/width = ~1.54 */
-  padding-top: min(524px, 135.6vw);
-  border-radius: 10px;
-  position: relative;
+  /* vertical ticket ~0.65:1 ratio */
+  padding-top: min(523px, 135vw);
   filter: drop-shadow(6px 8px 30px rgba(0,0,0,0.55));
   animation: paScaleIn 0.3s var(--ease) both;
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import miniTicketImg from '../assets/Tickets Dvalentine.png'
-import expandedTicketImg from '../assets/Tickets DValentineExp.png'
+import miniTicketImg from '../assets/Dvalentine.png'
+import expandedTicketImg from '../assets/DValentineExp.png'
 import '../Pagscss/Paquetes.css';
 import '../PageFlip.css' 
 import useFlipNavigate from '../useFlipNavigate';
