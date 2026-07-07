@@ -2,11 +2,38 @@ import { useEffect, useRef } from 'react'
 import useFlipNavigate from '../useFlipNavigate'
 import '../Pagscss/Keychain.css'
 
-function Keychain() {
+interface KeychainProps {
+  journalRef?: React.RefObject<HTMLDivElement>
+}
+
+function Keychain({ journalRef }: KeychainProps) {
   const flipTo = useFlipNavigate()
   const charmRef = useRef<HTMLDivElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
-  // Jiggle when page flips — listen for the flip-out class being added anywhere
+  // Position keychain at top-left of journal when journalRef provided
+  useEffect(() => {
+    if (!journalRef?.current || !wrapperRef.current) return
+
+    const updatePosition = () => {
+      const journal = journalRef.current
+      const wrapper = wrapperRef.current
+      if (!journal || !wrapper) return
+
+      const rect = journal.getBoundingClientRect()
+      // Position: right of the rings (rings are ~48px wide), left of the tab
+      // rings end at roughly rect.left + 48px, tab starts around rect.left + 120px
+      // so center the keychain at rect.left + 84px
+      wrapper.style.left = `${rect.left + 60}px`
+      wrapper.style.top = `${rect.top - 10}px`
+    }
+
+    updatePosition()
+    window.addEventListener('resize', updatePosition)
+    return () => window.removeEventListener('resize', updatePosition)
+  }, [journalRef])
+
+  // Jiggle on page flip
   useEffect(() => {
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
@@ -21,7 +48,6 @@ function Keychain() {
       }
     })
 
-    // Observe all flip-pages elements
     const observe = () => {
       document.querySelectorAll('.flip-pages, .flip-pages-left').forEach(el => {
         observer.observe(el, { attributes: true, attributeFilter: ['style'] })
@@ -29,25 +55,21 @@ function Keychain() {
     }
 
     observe()
-
-    // Re-observe on route change since DOM elements remount
     const interval = setInterval(observe, 1000)
-
-    return () => {
-      observer.disconnect()
-      clearInterval(interval)
-    }
+    return () => { observer.disconnect(); clearInterval(interval) }
   }, [])
 
   return (
-    <div className="keychain-wrapper" aria-label="Ir a inicio">
-      {/* Chain/cord */}
+    <div
+      ref={wrapperRef}
+      className={`keychain-wrapper ${journalRef ? 'keychain-wrapper--journal' : ''}`}
+      aria-label="Ir a inicio"
+    >
       <div className="keychain-cord" aria-hidden="true">
         <div className="keychain-cord-line" />
         <div className="keychain-cord-ring" />
       </div>
 
-      {/* Charm */}
       <div
         ref={charmRef}
         className="keychain-charm"
@@ -56,7 +78,6 @@ function Keychain() {
         tabIndex={0}
         onKeyDown={e => e.key === 'Enter' && flipTo('/')}
       >
-        {/* Logo placeholder — replace with <img> when ready */}
         <div className="keychain-logo-placeholder" aria-label="Logo Destineto">
           <span className="keychain-logo-text">D</span>
         </div>

@@ -1,5 +1,6 @@
-import '../PageFlip.css' 
+import { useRef } from 'react'
 import useFlipNavigate from '../useFlipNavigate'
+import Keychain from './Keychain.tsx'
 import '../Pagscss/HomePage.css'
 
 const bookmarks = [
@@ -13,17 +14,21 @@ const bookmarks = [
 
 function HomePage() {
   const flipTo = useFlipNavigate()
+  const journalRef = useRef<HTMLDivElement>(null)
 
   return (
     <div className="hp-scene">
       <div className="hp-bg" aria-hidden="true" />
+
+      {/* Keychain connected to the journal on homepage */}
+      <Keychain journalRef={journalRef} />
 
       <div className="hp-current-tab">
         <span className="hp-current-tab__dot" />
         Página de Inicio
       </div>
 
-      <div className="hp-journal open-book flip-journal">
+      <div className="hp-journal" ref={journalRef}>
         <div className="hp-rings" aria-hidden="true">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="hp-ring" />

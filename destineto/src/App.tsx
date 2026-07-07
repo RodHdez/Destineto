@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Keychain from './Pagstsx/Keychain'
 import HomePage from './Pagstsx/HomePage'
 import Acerca from './Pagstsx/Acerca'
@@ -9,9 +9,13 @@ import Reservas from './Pagstsx/Reservas'
 import Locaciones from './Pagstsx/Locaciones'
 
 function App() {
+  const location = useLocation()
+  const isHome = location.pathname === '/'
+
   return (
     <>
-      <Keychain />
+      {/* Show floating keychain on all pages except home — home has its own journal-connected one */}
+      {!isHome && <Keychain />}
       <Routes>
         <Route path="/"           element={<HomePage />} />
         <Route path="/acerca-de"  element={<Acerca />} />

@@ -1,8 +1,8 @@
 /* ── Keychain wrapper — fixed to top-left corner of journal ─ */
 .keychain-wrapper {
   position: fixed;
-  top: calc(50vh - 320px);
-  left: calc(50% - 420px - 30px);
+  top: calc(50vh - 260px);
+  left: calc(50% - 500px + 60px);
   z-index: 50;
   display: flex;
   flex-direction: column;
@@ -98,4 +98,10 @@
     top: 12px;
     left: 12px;
   }
+}
+
+/* ── Journal-connected variant (homepage) ────────────────── */
+.keychain-wrapper--journal {
+  /* position is set dynamically via JS, overriding the default fixed position */
+  position: fixed;
 }
