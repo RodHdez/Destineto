@@ -1,0 +1,101 @@
+/* ── Keychain wrapper — fixed to top-left corner of journal ─ */
+.keychain-wrapper {
+  position: fixed;
+  top: calc(50vh - 320px);
+  left: calc(50% - 420px - 30px);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  transform-origin: top center;
+}
+
+/* ── Cord ────────────────────────────────────────────────── */
+.keychain-cord {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  pointer-events: none;
+}
+
+.keychain-cord-line {
+  width: 2px;
+  height: 28px;
+  background: linear-gradient(to bottom, #8a7060, #c0a080);
+  border-radius: 1px;
+}
+
+.keychain-cord-ring {
+  width: 12px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid #c0a080;
+  background: transparent;
+}
+
+/* ── Charm ───────────────────────────────────────────────── */
+.keychain-charm {
+  pointer-events: all;
+  cursor: pointer;
+  transform-origin: top center;
+  transition: transform 0.2s ease;
+}
+
+.keychain-charm:hover {
+  transform: scale(1.08);
+}
+
+/* ── Logo placeholder circle ─────────────────────────────── */
+.keychain-logo-placeholder {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #d4ae8a, #a07850);
+  border: 2px solid #c0a080;
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.35),
+    inset 0 1px 2px rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*
+  When you have your logo ready, replace .keychain-logo-placeholder content with:
+  <img src={logoImg} alt="Destineto" style={{ width: '28px', height: '28px', borderRadius: '50%' }} />
+*/
+.keychain-logo-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  line-height: 1;
+  user-select: none;
+}
+
+/* ── Jiggle animation ────────────────────────────────────── */
+@keyframes keychainJiggle {
+  0%   { transform: rotate(0deg); }
+  10%  { transform: rotate(-18deg); }
+  25%  { transform: rotate(14deg); }
+  40%  { transform: rotate(-10deg); }
+  55%  { transform: rotate(7deg); }
+  70%  { transform: rotate(-4deg); }
+  85%  { transform: rotate(2deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.keychain-jiggle {
+  animation: keychainJiggle 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ── Responsive — hide on very small screens ─────────────── */
+@media (max-width: 900px) {
+  .keychain-wrapper {
+    top: 12px;
+    left: 12px;
+  }
+}

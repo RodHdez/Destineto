@@ -107,11 +107,13 @@
 
 .lo-book-page {
   flex: 1;
-  padding: 2.5rem 2.5rem 3.5rem;
+  padding: 2rem 2rem 3rem;
   display: flex;
   flex-direction: column;
   position: relative;
   min-height: 520px;
+  max-height: 520px;
+  overflow: hidden;
 }
 
 .lo-page-left {
@@ -130,7 +132,9 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: 0.9rem;
+  gap: 0.75rem;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .lo-page-content--centered {
@@ -198,8 +202,8 @@
 .lo-photo-placeholder {
   width: 100%;
   flex: 1;
-  min-height: 160px;
-  max-height: 220px;
+  min-height: 100px;
+  max-height: 160px;
   border: 1.5px dashed rgba(30,18,9,0.18);
   border-radius: 4px;
   display: flex;

@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
+import Keychain from './Pagstsx/Keychain'
 import HomePage from './Pagstsx/HomePage'
 import Acerca from './Pagstsx/Acerca'
 import Historia from './Pagstsx/Historia'
@@ -9,6 +10,8 @@ import Locaciones from './Pagstsx/Locaciones'
 
 function App() {
   return (
+    <>
+      <Keychain />
       <Routes>
         <Route path="/"           element={<HomePage />} />
         <Route path="/acerca-de"  element={<Acerca />} />
@@ -18,6 +21,7 @@ function App() {
         <Route path="/reservas"   element={<Reservas />} />
         <Route path="/locaciones" element={<Locaciones />} />
       </Routes>
+    </>
   )
 }
 

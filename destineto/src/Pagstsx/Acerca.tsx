@@ -48,7 +48,7 @@ const leftPages = [
   // Spread 5 — propuesta header
   <div className="ac-page-content ac-page-content--centered">
     <span className="ac-eyebrow">Lo que te ofrecemos</span>
-    <h2 className="ac-title">Propuesta<br />de Valor</h2>
+    <h2 className="ac-title">Nuestra<br />Ambición</h2>
     <div className="ac-vintage-divider">✦ ✦ ✦</div>
     <p className="ac-aside">Más que alojamiento — un asiento en nuestro hogar.</p>
   </div>,

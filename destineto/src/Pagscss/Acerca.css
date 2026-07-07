@@ -129,6 +129,7 @@
   flex-direction: column;
   height: 100%;
   gap: 1rem;
+  justify-content: center;
 }
 
 .ac-page-content--centered {
