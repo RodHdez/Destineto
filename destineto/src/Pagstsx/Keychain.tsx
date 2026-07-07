@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import useFlipNavigate from '../useFlipNavigate'
 import '../Pagscss/Keychain.css'
 
@@ -10,28 +11,54 @@ function Keychain({ journalRef }: KeychainProps) {
   const flipTo = useFlipNavigate()
   const charmRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
+  const location = useLocation()
 
-  // Position keychain at top-left of journal when journalRef provided
+  // Reposition and slide in whenever the route changes
   useEffect(() => {
-    if (!journalRef?.current || !wrapperRef.current) return
+    const wrapper = wrapperRef.current
+    if (!wrapper) return
 
-    const updatePosition = () => {
-      const journal = journalRef.current
-      const wrapper = wrapperRef.current
-      if (!journal || !wrapper) return
+    // Hide immediately off-screen above
+    wrapper.style.transition = 'none'
+    wrapper.style.opacity = '0'
+    wrapper.style.transform = 'translateY(-60px)'
 
-      const rect = journal.getBoundingClientRect()
-      // Position: right of the rings (rings are ~48px wide), left of the tab
-      // rings end at roughly rect.left + 48px, tab starts around rect.left + 120px
-      // so center the keychain at rect.left + 84px
+    const getJournal = () =>
+      journalRef?.current ??
+      (document.querySelector(
+        '.hp-journal, .ac-journal, .hi-journal, .lo-journal, .pa-journal, .re-journal, .co-journal'
+      ) as HTMLElement | null)
+
+    const applyPosition = (el: HTMLElement) => {
+      const rect = el.getBoundingClientRect()
       wrapper.style.left = `${rect.left + 60}px`
       wrapper.style.top = `${rect.top - 10}px`
     }
 
-    updatePosition()
-    window.addEventListener('resize', updatePosition)
-    return () => window.removeEventListener('resize', updatePosition)
-  }, [journalRef])
+    // Wait for flip animation to finish, then position and slide in
+    const slideInTimer = setTimeout(() => {
+      const journal = getJournal()
+      if (journal) applyPosition(journal)
+
+      requestAnimationFrame(() => {
+        wrapper.style.transition = 'opacity 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
+        wrapper.style.opacity = '1'
+        wrapper.style.transform = 'translateY(0)'
+      })
+    }, 550) // just after the 500ms flip finishes
+
+    // Keep position updated on resize
+    const handleResize = () => {
+      const journal = getJournal()
+      if (journal) applyPosition(journal)
+    }
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      clearTimeout(slideInTimer)
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [location.pathname, journalRef])
 
   // Jiggle on page flip
   useEffect(() => {
@@ -62,8 +89,9 @@ function Keychain({ journalRef }: KeychainProps) {
   return (
     <div
       ref={wrapperRef}
-      className={`keychain-wrapper ${journalRef ? 'keychain-wrapper--journal' : ''}`}
+      className="keychain-wrapper"
       aria-label="Ir a inicio"
+      style={{ opacity: 0 }}
     >
       <div className="keychain-cord" aria-hidden="true">
         <div className="keychain-cord-line" />
