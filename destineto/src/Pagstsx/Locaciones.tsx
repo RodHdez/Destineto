@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import '../Pagscss/Locaciones.css';
 import '../PageFlip.css' 
 import useFlipNavigate from '../useFlipNavigate';
@@ -79,7 +80,7 @@ const barrinaInfo: PropertyInfo = {
 
 // ── Property info modal component ─────────────────────────
 function PropertyModal({ info, onClose }: { info: PropertyInfo; onClose: () => void }) {
-  return (
+  return createPortal(
     <div className="lo-modal-overlay" onClick={onClose} role="dialog" aria-modal="true">
       <div className="lo-modal" onClick={e => e.stopPropagation()}>
         <button className="lo-modal-close" onClick={onClose} aria-label="Cerrar">✕</button>
@@ -127,7 +128,7 @@ function PropertyModal({ info, onClose }: { info: PropertyInfo; onClose: () => v
         </div>
       </div>
     </div>
-  )
+  , document.body)
 }
 
 // ── Postcard component ────────────────────────────────────
