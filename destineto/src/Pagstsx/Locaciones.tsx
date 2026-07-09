@@ -168,6 +168,94 @@ function Postcard({ info, prefix }: { info: PropertyInfo; prefix: string }) {
   )
 }
 
+
+// ── Gallery Modal ─────────────────────────────────────────
+function GalleryModal({ nombre, onClose }: { nombre: string; onClose: () => void }) {
+  // Placeholder images — replace src with real paths when ready
+  const placeholders = [1, 2, 3, 4, 5, 6]
+
+  return createPortal(
+    <div className="lo-modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label={`Galería de ${nombre}`}>
+      <div className="lo-gallery-modal" onClick={e => e.stopPropagation()}>
+        <button className="lo-modal-close" onClick={onClose} aria-label="Cerrar">✕</button>
+        <h2 className="lo-gallery-title">{nombre}</h2>
+        <p className="lo-gallery-subtitle">Galería de imágenes</p>
+        <div className="lo-gallery-grid">
+          {placeholders.map(i => (
+            <div key={i} className="lo-gallery-cell" aria-label={`Foto ${i}`}>
+              <span className="lo-gallery-cell-icon">📷</span>
+              <span className="lo-gallery-cell-label">Foto {i}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  , document.body)
+}
+
+// ── Photo placeholder with gallery trigger ────────────────
+function GalleryPlaceholder({ nombre, label }: { nombre: string; label: string }) {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <div
+        className="lo-photo-placeholder lo-photo-placeholder--gallery"
+        role="button"
+        tabIndex={0}
+        onClick={() => setOpen(true)}
+        onKeyDown={e => e.key === 'Enter' && setOpen(true)}
+        aria-label={`Ver galería de ${nombre}`}
+      >
+        <span className="lo-gallery-placeholder-icon">📷</span>
+        <span className="lo-photo-label">{label}</span>
+        <div className="lo-gallery-plus" aria-hidden="true">+</div>
+      </div>
+      {open && <GalleryModal nombre={nombre} onClose={() => setOpen(false)} />}
+    </>
+  )
+}
+
+function NearbyGalleryPlaceholder({ nombre, label }: { nombre: string; label: string }) {
+  const [open, setOpen] = useState(false)
+  const placeholders = [1, 2, 3, 4, 5, 6]
+
+  return (
+    <>
+      <div
+        className="lo-photo-placeholder lo-photo-placeholder--gallery"
+        role="button"
+        tabIndex={0}
+        onClick={() => setOpen(true)}
+        onKeyDown={e => e.key === 'Enter' && setOpen(true)}
+        aria-label={`Ver lugares cercanos a ${nombre}`}
+      >
+        <span className="lo-gallery-placeholder-icon">🗺️</span>
+        <span className="lo-photo-label">En el Área</span>
+        <div className="lo-gallery-plus" aria-hidden="true">+</div>
+      </div>
+
+      {open && createPortal(
+        <div className="lo-modal-overlay" onClick={() => setOpen(false)} role="dialog" aria-modal="true">
+          <div className="lo-gallery-modal" onClick={e => e.stopPropagation()}>
+            <button className="lo-modal-close" onClick={() => setOpen(false)} aria-label="Cerrar">✕</button>
+            <h2 className="lo-gallery-title">En el Área · {nombre}</h2>
+            <p className="lo-gallery-subtitle">Lugares cercanos para visitar</p>
+            <div className="lo-gallery-grid">
+              {placeholders.map(i => (
+                <div key={i} className="lo-gallery-cell">
+                  <span className="lo-gallery-cell-icon">📷</span>
+                  <span className="lo-gallery-cell-label">Lugar {i}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      , document.body)}
+    </>
+  )
+}
+
 // ── Location data ─────────────────────────────────────────
 const cabanaLeft = [
   <div className="lo-page-content lo-page-content--centered">
@@ -180,18 +268,14 @@ const cabanaLeft = [
     <span className="lo-eyebrow">La filosofía detrás del lugar</span>
     <h2 className="lo-title">El espíritu<br />de <em>la cabaña</em></h2>
     <div className="lo-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
-    <div className="lo-photo-placeholder" aria-label="Foto interior de La Cabaña">
-      <span className="lo-photo-label">📷<br />Interior<br />de la cabaña</span>
-    </div>
+    <GalleryPlaceholder nombre="La Cabaña del Tío Neto" label="Interior de la cabaña" />
   </div>,
-  <div className="lo-page-content lo-page-content--centered">
-    <span className="lo-eyebrow">Conoce la zona</span>
-    <h2 className="lo-title">Los<br /><em>Naranjos</em></h2>
-    <div className="lo-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
-    <div className="lo-photo-placeholder" aria-label="Foto de Los Naranjos">
-      <span className="lo-photo-label">📷<br />Los Naranjos<br />desde el cerro</span>
-    </div>
-  </div>,
+ <div className="lo-page-content lo-page-content--centered">
+  <span className="lo-eyebrow">Conoce la zona</span>
+  <h2 className="lo-title">Los<br /><em>Naranjos</em></h2>
+  <div className="lo-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
+  <NearbyGalleryPlaceholder nombre="La Cabaña del Tío Neto" label="Los Naranjos" />
+</div>,
 ]
 
 const cabanaRight = [
@@ -234,17 +318,13 @@ const barrinaLeft = [
     <span className="lo-eyebrow">El origen del nombre</span>
     <h2 className="lo-title">¿Por qué<br /><em>La Barriña?</em></h2>
     <div className="lo-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
-    <div className="lo-photo-placeholder" aria-label="Foto de la playa en La Barriña">
-      <span className="lo-photo-label">📷<br />La playa<br />desde la terraza</span>
-    </div>
+    <GalleryPlaceholder nombre="La Barriña" label="La playa desde la terraza" />
   </div>,
   <div className="lo-page-content lo-page-content--centered">
     <span className="lo-eyebrow">Conoce la zona</span>
     <h2 className="lo-title">Barra de<br /><em>Santiago</em></h2>
     <div className="lo-vintage-divider" aria-hidden="true">✦ ✦ ✦</div>
-    <div className="lo-photo-placeholder" aria-label="Foto de la Barra de Santiago">
-      <span className="lo-photo-label">📷<br />Barra de<br />Santiago</span>
-    </div>
+    <NearbyGalleryPlaceholder nombre="La Barriña" label="Barra de Santiago" />
   </div>,
 ]
 

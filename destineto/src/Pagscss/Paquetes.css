@@ -63,7 +63,7 @@
   align-items: center;
   gap: 0.5rem;
   top: calc(50vh - 287px);
-  left: calc(50% + 140px);
+  left: calc(50% + 60px);
   animation: paFadeDown 0.5s var(--ease) both;
 }
 
@@ -235,9 +235,9 @@
 /* Overlay content positioned absolutely inside the shell */
 .pa-ticket-mini-img-area {
   position: absolute;
-  top: 0; left: 0;
-  width: 62%;
-  height: 100%;
+  top: 0; left: 10;
+  width: 75%;
+  height: 125%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -247,7 +247,7 @@
 
 .pa-ticket-mini-name {
   font-family: var(--font-ticket);
-  font-size: 0.82rem;
+  font-size: 0.80rem;
   color: #5c1a3a;
   font-weight: 700;
   line-height: 1.2;
@@ -256,17 +256,17 @@
 
 .pa-ticket-mini-tipo {
   font-family: var(--font-sans);
-  font-size: 0.68rem;
+  font-size: 0.90rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #8b1a4a;
+  color: #fffefe;
   opacity: 0.9;
 }
 
 .pa-ticket-mini-precio {
   font-family: var(--font-ticket);
   font-size: 0.72rem;
-  color: #5c1a3a;
+  color: #ffffff;
   margin-top: 2px;
 }
 
@@ -320,12 +320,14 @@
   padding: 0 4% 3%;
 }
 
+/* Tipo de estadia sobre la imagen*/
 .pa-ticket-exp-img-label {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
+/* Nombre del paquete sobre la imagen */
 .pa-ticket-exp-name {
   font-family: var(--font-ticket);
   font-size: 0.9rem;
@@ -334,6 +336,7 @@
   line-height: 1.2;
 }
 
+/* Tipo de estadia sobre la imagen Marco*/
 .pa-ticket-exp-tipo {
   font-family: var(--font-sans);
   font-size: 0.6rem;
@@ -349,7 +352,7 @@
 /* Middle content area: ~32%–72% of ticket height */
 .pa-ticket-exp-content {
   position: absolute;
-  top: 33%;
+  top: 36%;
   left: 6%;
   right: 6%;
   height: 38%;
@@ -414,23 +417,10 @@
   padding: 1px 5px;
 }
 
-/* Perforation line — aligns with the ticket image's dashed line */
-.pa-ticket-exp-perforation {
-  position: absolute;
-  top: 72%;
-  left: 5%; right: 5%;
-  height: 1px;
-  background: repeating-linear-gradient(
-    90deg,
-    rgba(92,26,58,0.35) 0px, rgba(92,26,58,0.35) 6px,
-    transparent 6px, transparent 10px
-  );
-}
-
 /* Barcode area: bottom ~20% */
 .pa-ticket-exp-barcode {
   position: absolute;
-  top: 74%;
+  top: 64%;
   left: 6%; right: 6%;
   height: 22%;
   display: flex;
@@ -450,8 +440,8 @@
 /* Close button */
 .pa-ticket-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: -0.8rem;
+  right: 0.3rem;
   background: rgba(92,26,58,0.55);
   color: #fff;
   border: none;
@@ -604,6 +594,27 @@
 
 .pa-page-tab:hover { opacity: 0.85; transform: translateY(3px); }
 .pa-page-tab--active { opacity: 1; background-color: #1d4ed8; transform: translateY(4px); box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+
+.pa-ticket-reservar-btn {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #fff;
+  background: #5c1a3a;
+  border: none;
+  border-radius: 2px;
+  padding: 3px 10px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+
+.pa-ticket-reservar-btn:hover {
+  background: #8b1a4a;
+}
 
 /* ── Animations ──────────────────────────────────────────── */
 @keyframes paRiseUp {

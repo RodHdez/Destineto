@@ -61,7 +61,7 @@
   align-items: center;
   gap: 0.5rem;
   top: calc(50vh - 287px);
-  left: calc(50% + 140px);
+  left: calc(50% + 70px);
   animation: coFadeDown 0.5s var(--ease) both;
 }
 

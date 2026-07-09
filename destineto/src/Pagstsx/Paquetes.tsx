@@ -134,7 +134,7 @@ function ExpandedTicket({ pkg, onClose }: ExpandedTicketProps) {
               <span className="pa-ticket-detail-value">{pkg.precio}</span>
             </div>
             <div className="pa-ticket-detail">
-              <span className="pa-ticket-detail-label">Precio por Invitado Adicional</span>
+              <span className="pa-ticket-detail-label">Invitado Adicional</span>
               <span className="pa-ticket-detail-value">{pkg.precioAdicional}</span>
             </div>
           </div>
