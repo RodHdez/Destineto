@@ -281,7 +281,7 @@ const cabanaLeft = [
 const cabanaRight = [
   <div className="lo-page-content">
     <p className="lo-drop-cap">
-      Enclavada entre los frondosos bosques y las calmadas nieblas de Los Naranjos, La Cabaña del Tío Neto es un refugio construido para simular la manera de antes; paredes blancas recubiertas de cal pura, sin adornos innecesarios, honestas y sólidas como la mano que las levantó.
+      Ubicada entre los frondosos bosques y las calmadas nieblas de Los Naranjos, La Cabaña del Tío Neto es un refugio construido para simular la manera de antes; paredes blancas recubiertas de cal pura, sin adornos innecesarios, honestas y sólidas como la mano que las levantó.
     </p>
     <p className="lo-text">
       El ambiente montañoso te envuelve desde el primer momento: días soleados que iluminan el verde profundo del bosque, y noches neblinosas que apagan el ruido del mundo. Aquí, la tranquilidad no es un lujo sino el estado natural de las cosas.
@@ -331,7 +331,7 @@ const barrinaLeft = [
 const barrinaRight = [
   <div className="lo-page-content">
     <p className="lo-drop-cap">
-      Enclavada en la costa de La Barra de Santiago, La Barriña es un refugio tropical donde el sol veraniego y el sonido calmado de las olas marcan el ritmo del día. Ya sea que te refresques en la piscina comunitaria o te adentres en las cálidas aguas de la playa, cada momento aquí se siente como una celebración tranquila de la vida.
+      Ubicada en la costa de La Barra de Santiago, La Barriña es un refugio tropical donde el sol veraniego y el sonido calmado de las olas marcan el ritmo del día. Ya sea que te refresques en la piscina comunitaria o te adentres en las cálidas aguas de la playa, cada momento aquí se siente como una celebración tranquila de la vida.
     </p>
     <p className="lo-text">
       Este no es un lugar para el ajetreo; es un lugar para recordar cómo se siente no tener prisa.
