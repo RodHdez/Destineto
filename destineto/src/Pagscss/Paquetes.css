@@ -184,7 +184,7 @@
    ══════════════════════════════════════════════════════════ */
 .pa-ticket-mini {
   position: relative;
-  width: 100%;
+  width: 90%;
   max-width: 100%;
   cursor: pointer;
   transform: rotate(var(--rotation, 0deg));
@@ -201,8 +201,8 @@
 /* Scrapbook tape above the ticket */
 .pa-ticket-tape {
   position: absolute;
-  top: -8px;
-  left: 50%;
+  top: 9px;
+  left: 52%;
   transform: translateX(-50%) rotate(-1deg);
   width: 50px;
   height: 16px;
