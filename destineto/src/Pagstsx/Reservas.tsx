@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import '../Pagscss/Reservas.css';
 import '../PageFlip.css' 
 import useFlipNavigate from '../useFlipNavigate';
@@ -107,6 +107,15 @@ function Reservas() {
   const [step, setStep] = useState(0) // 0 = date/pkg, 1 = payment, 2 = confirmation
   const [booking, setBooking] = useState<BookingData>(emptyBooking)
   const [confirmNum] = useState(() => Math.random().toString(36).slice(2,10).toUpperCase())
+
+  // Pre-select package if coming from Paquetes page
+  useEffect(() => {
+    const saved = sessionStorage.getItem('selectedPackage')
+    if (saved) {
+      setBooking(b => ({ ...b, paquete: saved }))
+      sessionStorage.removeItem('selectedPackage')
+    }
+  }, [])
 
   const set = (field: keyof BookingData) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setBooking(b => ({ ...b, [field]: e.target.value }))

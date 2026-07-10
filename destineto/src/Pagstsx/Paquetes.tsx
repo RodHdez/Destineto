@@ -23,19 +23,19 @@ interface Package {
   precio: string
   precioAdicional: string
   amenidades: string[]
-  precioRango: string
+  fechas: string
   tapeColor: string
 }
 
 const packages: Package[] = [
-  { id: 'mama', nombre: 'Paquete Mamá', tipo: 'Experiencia', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#e8a0a0' },
-  { id: 'papa', nombre: 'Paquete Papá', tipo: 'Experiencia', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#a0b4e8' },
-  { id: 'fiestas-agostinas', nombre: 'Fiestas Agostinas', tipo: 'Evento', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#e8d080' },
-  { id: 'secretaria', nombre: 'Paquete Secretaria', tipo: 'Experiencia', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#b0e0a0' },
-  { id: 'almuerzo-navidad', nombre: 'Almuerzo Empresarial Navidad', tipo: 'Evento', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#e8a0a0' },
-  { id: 'fin-de-ano', nombre: 'Fin de Año', tipo: 'Evento', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#c0a0e8' },
-  { id: 'cumple', nombre: 'Cumpleaños', tipo: 'Evento', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#e8c0a0' },
-  { id: 'boda', nombre: 'Boda', tipo: 'Evento', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], precioRango: 'Desde $XX', tapeColor: '#f0e0c0' },
+  { id: 'mama',             nombre: 'Paquete Mamá',                tipo: 'Experiencia', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'FEB 14 – 20',      tapeColor: '#e8a0a0' },
+  { id: 'papa',             nombre: 'Paquete Papá',                tipo: 'Experiencia', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'JUN 17 – 20',      tapeColor: '#a0b4e8' },
+  { id: 'fiestas-agostinas',nombre: 'Fiestas Agostinas',           tipo: 'Evento',      invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'AGO 1 – 6',        tapeColor: '#e8d080' },
+  { id: 'secretaria',       nombre: 'Paquete Secretaria',          tipo: 'Experiencia', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'ABR 26 – 27',      tapeColor: '#b0e0a0' },
+  { id: 'almuerzo-navidad', nombre: 'Almuerzo Empresarial Navidad',tipo: 'Evento',      invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'DIC 20 – 21',      tapeColor: '#e8a0a0' },
+  { id: 'fin-de-ano',       nombre: 'Fin de Año',                  tipo: 'Evento',      invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'DIC 30 – ENE 1',  tapeColor: '#c0a0e8' },
+  { id: 'cumple',           nombre: 'Cumpleaños',                  tipo: 'Evento',      invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'Por definir',      tapeColor: '#e8c0a0' },
+  { id: 'boda',             nombre: 'Boda',                        tipo: 'Evento',      invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'Por definir',      tapeColor: '#f0e0c0' },
 ]
 
 const spreads = [packages.slice(0, 4), packages.slice(4, 8)]
@@ -58,22 +58,23 @@ function MiniTicket({ pkg, onOpen, rotation }: MiniTicketProps) {
       onKeyDown={e => e.key === 'Enter' && onOpen(pkg)}
       aria-label={`Ver detalles de ${pkg.nombre}`}
     >
-      <div
-        className="pa-ticket-tape"
-        style={{ background: pkg.tapeColor }}
-        aria-hidden="true"
-      />
+      <div className="pa-ticket-tape" style={{ background: pkg.tapeColor }} aria-hidden="true" />
 
       <div
         className="pa-ticket-mini-shell"
         style={{ backgroundImage: `url(${miniTicketImg})` }}
       >
+        {/* Date range — centered in the hearts image area */}
         <div className="pa-ticket-mini-img-area">
-          <span className="pa-ticket-mini-name">{pkg.nombre}</span>
-          <span className="pa-ticket-mini-tipo">{pkg.tipo}</span>
-          <span className="pa-ticket-mini-precio">{pkg.precioRango}</span>
+          <span className="pa-ticket-mini-fecha">{pkg.fechas}</span>
         </div>
-        <div className="pa-ticket-mini-stub" aria-hidden="true" />
+
+        {/* Name below the image area (in the stub / label zone) — actually outside so it floats above */}
+      </div>
+
+      {/* Name label sits below the ticket image */}
+      <div className="pa-ticket-mini-label">
+        <span className="pa-ticket-mini-name">{pkg.nombre}</span>
       </div>
     </div>
   )
@@ -85,32 +86,23 @@ interface ExpandedTicketProps {
 }
 
 function ExpandedTicket({ pkg, onClose }: ExpandedTicketProps) {
+  const flipTo = useFlipNavigate()
   return (
-    <div
-      className="pa-modal-overlay"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label={pkg.nombre}
-    >
+    <div className="pa-modal-overlay" onClick={onClose} role="dialog" aria-modal="true" aria-label={pkg.nombre}>
       <div
         className="pa-ticket-expanded"
         style={{ backgroundImage: `url(${expandedTicketImg})` }}
         onClick={e => e.stopPropagation()}
       >
-        <div
-          className="pa-ticket-tape pa-ticket-tape--expanded"
-          style={{ background: pkg.tapeColor }}
-          aria-hidden="true"
-        />
+        <div className="pa-ticket-tape pa-ticket-tape--expanded" style={{ background: pkg.tapeColor }} aria-hidden="true" />
 
+        {/* Top image area — name and type overlay */}
         <div className="pa-ticket-exp-img-area">
-          <div className="pa-ticket-exp-img-label">
-            <span className="pa-ticket-exp-name">{pkg.nombre}</span>
-            <span className="pa-ticket-exp-tipo">{pkg.tipo}</span>
-          </div>
+          <span className="pa-ticket-exp-name">{pkg.nombre}</span>
+          <span className="pa-ticket-exp-tipo">{pkg.tipo}</span>
         </div>
 
+        {/* Detail grid — sits in the blank middle section */}
         <div className="pa-ticket-exp-content">
           <div className="pa-ticket-detail-grid">
             <div className="pa-ticket-detail">
@@ -134,7 +126,7 @@ function ExpandedTicket({ pkg, onClose }: ExpandedTicketProps) {
               <span className="pa-ticket-detail-value">{pkg.precio}</span>
             </div>
             <div className="pa-ticket-detail">
-              <span className="pa-ticket-detail-label">Invitado Adicional</span>
+              <span className="pa-ticket-detail-label">Precio por Invitado Adicional</span>
               <span className="pa-ticket-detail-value">{pkg.precioAdicional}</span>
             </div>
           </div>
@@ -147,10 +139,23 @@ function ExpandedTicket({ pkg, onClose }: ExpandedTicketProps) {
               ))}
             </ul>
           </div>
+
+          <button
+            className="pa-ticket-reservar-btn"
+            onClick={() => {
+              onClose()
+              sessionStorage.setItem('selectedPackage', pkg.nombre)
+              flipTo('/reservas')
+            }}
+          >
+            Reservar →
+          </button>
         </div>
 
+        {/* Perforation line */}
         <div className="pa-ticket-exp-perforation" aria-hidden="true" />
 
+        {/* Barcode area */}
         <div className="pa-ticket-exp-barcode" aria-hidden="true">
           <span className="pa-ticket-barcode-num">DESTINETO · {pkg.id.toUpperCase()}</span>
         </div>
@@ -214,7 +219,6 @@ function Paquetes() {
   return (
     <div className="pa-scene">
       <div className="pa-bg" aria-hidden="true" />
-
       <div className="pa-current-tab">
         <span className="pa-current-tab__dot" />
         Paquetes de Viaje
@@ -237,9 +241,7 @@ function Paquetes() {
                 ))}
               </div>
             </div>
-            {page > 0 && (
-              <button className="pa-arrow pa-arrow-left" onClick={goPrev}>←</button>
-            )}
+            {page > 0 && <button className="pa-arrow pa-arrow-left" onClick={goPrev}>←</button>}
           </div>
 
           <div className="pa-book-page pa-page-right flip-pages">
@@ -250,26 +252,17 @@ function Paquetes() {
                 ))}
               </div>
             </div>
-            {page < spreads.length - 1 && (
-              <button className="pa-arrow pa-arrow-right" onClick={goNext}>→</button>
-            )}
+            {page < spreads.length - 1 && <button className="pa-arrow pa-arrow-right" onClick={goNext}>→</button>}
           </div>
         </div>
 
         <div className="pa-rings" aria-hidden="true">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="pa-ring" />
-          ))}
+          {[...Array(6)].map((_, i) => <div key={i} className="pa-ring" />)}
         </div>
 
         <nav className="pa-bookmarks" aria-label="Secciones del sitio">
           {bookmarks.map((bm, i) => (
-            <button
-              key={bm.id}
-              className="pa-bookmark"
-              style={{ '--i': i } as React.CSSProperties}
-              onClick={() => flipTo(bm.path)}
-            >
+            <button key={bm.id} className="pa-bookmark" style={{ '--i': i } as React.CSSProperties} onClick={() => flipTo(bm.path)}>
               {bm.label}
             </button>
           ))}
@@ -277,21 +270,14 @@ function Paquetes() {
 
         <nav className="pa-page-tabs" aria-label="Página de paquetes">
           {spreads.map((_, i) => (
-            <button
-              key={i}
-              className={`pa-page-tab ${i === page ? 'pa-page-tab--active' : ''}`}
-              onClick={() => i !== page && (i > page ? goNext() : goPrev())}
-              aria-label={`Página ${i + 1}`}
-            >
+            <button key={i} className={`pa-page-tab ${i === page ? 'pa-page-tab--active' : ''}`} onClick={() => i !== page && (i > page ? goNext() : goPrev())} aria-label={`Página ${i + 1}`}>
               {i + 1}
             </button>
           ))}
         </nav>
       </div>
 
-      {selected && (
-        <ExpandedTicket pkg={selected} onClose={() => setSelected(null)} />
-      )}
+      {selected && <ExpandedTicket pkg={selected} onClose={() => setSelected(null)} />}
     </div>
   )
 }
