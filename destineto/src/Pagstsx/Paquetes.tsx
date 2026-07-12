@@ -99,7 +99,19 @@ function ExpandedTicket({ pkg, onClose }: ExpandedTicketProps) {
         {/* Top image area — name and type overlay */}
         <div className="pa-ticket-exp-img-area">
           <span className="pa-ticket-exp-name">{pkg.nombre}</span>
-          <span className="pa-ticket-exp-tipo">{pkg.tipo}</span>
+          <div className="pa-ticket-exp-badges">
+            <span className="pa-ticket-exp-tipo">{pkg.tipo}</span>
+            <button
+              className="pa-ticket-reservar-btn"
+              onClick={() => {
+                onClose()
+                sessionStorage.setItem('selectedPackage', pkg.nombre)
+                flipTo('/reservas')
+              }}
+            >
+              Reservar →
+            </button>
+          </div>
         </div>
 
         {/* Detail grid — sits in the blank middle section */}
@@ -139,17 +151,6 @@ function ExpandedTicket({ pkg, onClose }: ExpandedTicketProps) {
               ))}
             </ul>
           </div>
-
-          <button
-            className="pa-ticket-reservar-btn"
-            onClick={() => {
-              onClose()
-              sessionStorage.setItem('selectedPackage', pkg.nombre)
-              flipTo('/reservas')
-            }}
-          >
-            Reservar →
-          </button>
         </div>
 
         {/* Perforation line */}

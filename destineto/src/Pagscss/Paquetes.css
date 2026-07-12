@@ -682,3 +682,11 @@
 .pa-ticket-reservar-btn:hover {
   background: #8b1a4a;
 }
+
+/* ── Expanded ticket image area badges row ───────────────── */
+.pa-ticket-exp-badges {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
