@@ -62,7 +62,7 @@
   align-items: center;
   gap: 0.5rem;
   top: calc(50vh - 287px);
-  left: calc(50% + 90px);
+  left: calc(50% + 140px);
   animation: reFadeDown 0.5s var(--ease) both;
 }
 
@@ -761,4 +761,292 @@
   .re-bookmark::before { display: none; }
   .re-step-indicator { position: relative; bottom: auto; transform: none; margin-top: 1rem; flex-wrap: wrap; justify-content: center; }
   .re-scene { padding: 2rem 1rem; }
+}
+
+/* ── Smooth date input ───────────────────────────────────── */
+.re-date-input {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px dashed rgba(30,18,9,0.3);
+  padding-bottom: 4px;
+}
+
+.re-date-seg {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--ink);
+  background: transparent;
+  border: none;
+  outline: none;
+  text-align: center;
+  width: 28px;
+  padding: 2px 0;
+}
+
+.re-date-seg--year { width: 42px; }
+
+.re-date-seg::placeholder { color: rgba(30,18,9,0.3); }
+
+.re-date-seg:focus { color: var(--bm-bg); }
+
+.re-date-sep {
+  font-size: 0.85rem;
+  color: rgba(30,18,9,0.35);
+  user-select: none;
+}
+
+/* ── Label row (label + más info button) ─────────────────── */
+.re-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.2rem;
+}
+
+.re-more-info-btn {
+  font-family: var(--font-sans);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bm-bg);
+  background: none;
+  border: 1px solid var(--bm-bg);
+  border-radius: 2px;
+  padding: 2px 7px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.re-more-info-btn:hover {
+  background: var(--bm-bg);
+  color: #fff;
+}
+
+/* ── Package info popup ──────────────────────────────────── */
+.re-pkg-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30,18,9,0.6);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: reFadeIn 0.2s ease both;
+}
+
+.re-pkg-popup {
+  position: relative;
+  background: #fdf8f0;
+  border-radius: 6px;
+  width: min(720px, 94vw);
+  height: min(520px, 88vh);
+  display: flex;
+  overflow: hidden;
+  box-shadow: 6px 8px 40px rgba(0,0,0,0.5);
+  animation: reScaleIn 0.3s var(--ease) both;
+  /* Cutout paper edge effect */
+  border: 1px solid #e8dcc8;
+}
+
+.re-pkg-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  background: rgba(30,18,9,0.1);
+  border: none;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+.re-pkg-close:hover { background: rgba(30,18,9,0.2); }
+
+/* Left ticket list */
+.re-pkg-list {
+  width: 200px;
+  flex-shrink: 0;
+  border-right: 1px solid #e8dcc8;
+  overflow-y: auto;
+  padding: 1rem 0.5rem;
+  background: #f5efe3;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.re-pkg-list-title {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  color: var(--ink);
+  margin: 0 0 0.5rem 0.5rem;
+  opacity: 0.7;
+}
+
+.re-pkg-ticket-mini {
+  position: relative;
+  width: 100%;
+  background: #fdf8f0;
+  border: 1px solid #e8dcc8;
+  border-radius: 3px;
+  padding: 0.4rem 0.5rem 0.4rem 0.8rem;
+  cursor: pointer;
+  text-align: left;
+  transition: box-shadow 0.2s, transform 0.15s;
+  overflow: hidden;
+}
+
+.re-pkg-ticket-mini:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  transform: translateX(2px);
+}
+
+.re-pkg-ticket-mini--active {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  transform: translateX(4px);
+  border-color: #c0a080;
+}
+
+.re-pkg-ticket-tape {
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--tape);
+}
+
+.re-pkg-ticket-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.re-pkg-ticket-name {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.re-pkg-ticket-tipo {
+  font-family: var(--font-sans);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.re-pkg-ticket-fechas {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  color: var(--ink-light);
+  opacity: 0.7;
+}
+
+/* Right detail panel */
+.re-pkg-detail {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.re-pkg-detail-header {
+  padding-left: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.re-pkg-detail-name {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 0;
+}
+
+.re-pkg-detail-tipo {
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.re-pkg-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem 1rem;
+}
+
+.re-pkg-detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-bottom: 0.5px solid rgba(30,18,9,0.1);
+  padding-bottom: 0.4rem;
+}
+
+.re-pkg-detail-label {
+  font-family: var(--font-sans);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.re-pkg-detail-value {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  color: var(--ink);
+  font-style: italic;
+}
+
+.re-pkg-amenidades {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.re-pkg-amenidades-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 0.75rem;
+}
+
+.re-pkg-amenidades-list li {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  color: var(--ink-light);
+  line-height: 1.4;
+}
+
+/* ── Animations ──────────────────────────────────────────── */
+@keyframes reFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes reScaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
 }
