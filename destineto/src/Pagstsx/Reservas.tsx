@@ -51,7 +51,6 @@ const emptyBooking: BookingData = {
 }
 
 // ── Smooth date input ─────────────────────────────────────
-// Renders as DD / MM / YYYY with auto-advance between segments
 function DateInput({ value, onChange, label }: {
   value: string
   onChange: (val: string) => void
@@ -60,17 +59,39 @@ function DateInput({ value, onChange, label }: {
   const [dd, setDd] = useState('')
   const [mm, setMm] = useState('')
   const [yyyy, setYyyy] = useState('')
+  const [showPicker, setShowPicker] = useState(false)
+  const ddRef = useRef<HTMLInputElement>(null)
   const mmRef = useRef<HTMLInputElement>(null)
   const yyyyRef = useRef<HTMLInputElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
-  // Sync from external value (YYYY-MM-DD)
+  const today = new Date()
+  const [pickerYear, setPickerYear] = useState(today.getFullYear())
+  const [pickerMonth, setPickerMonth] = useState(today.getMonth())
+
+  const monthNames = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
+  const fullMonthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+  const dayNames = ['D','L','M','M','J','V','S']
+  const firstDay = new Date(pickerYear, pickerMonth, 1).getDay()
+  const daysInMonth = new Date(pickerYear, pickerMonth + 1, 0).getDate()
+  const cells: (number | null)[] = [...Array(firstDay).fill(null), ...Array.from({length: daysInMonth}, (_, i) => i + 1)]
+
   useEffect(() => {
     if (value) {
       const [y, m, d] = value.split('-')
-      setYyyy(y ?? '')
-      setMm(m ?? '')
-      setDd(d ?? '')
+      setYyyy(y ?? ''); setMm(m ?? ''); setDd(d ?? '')
     }
+  }, [])
+
+  // Close picker when clicking outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setShowPicker(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
   }, [])
 
   const emit = (d: string, m: string, y: string) => {
@@ -81,34 +102,102 @@ function DateInput({ value, onChange, label }: {
 
   const handleDd = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value.replace(/\D/g, '').slice(0, 2)
-    setDd(v)
-    emit(v, mm, yyyy)
+    setDd(v); emit(v, mm, yyyy)
     if (v.length === 2) mmRef.current?.focus()
   }
 
   const handleMm = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value.replace(/\D/g, '').slice(0, 2)
-    setMm(v)
-    emit(dd, v, yyyy)
+    setMm(v); emit(dd, v, yyyy)
     if (v.length === 2) yyyyRef.current?.focus()
   }
 
   const handleYyyy = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value.replace(/\D/g, '').slice(0, 4)
-    setYyyy(v)
-    emit(dd, mm, v)
+    setYyyy(v); emit(dd, mm, v)
   }
 
+  // Arrow key navigation between segments
+  const handleDdKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowRight' && (e.currentTarget.selectionStart ?? 0) >= dd.length) {
+      e.preventDefault(); mmRef.current?.focus(); mmRef.current?.select()
+    }
+  }
+  const handleMmKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowLeft' && (e.currentTarget.selectionStart ?? 0) === 0) {
+      e.preventDefault(); ddRef.current?.focus(); ddRef.current?.select()
+    }
+    if (e.key === 'ArrowRight' && (e.currentTarget.selectionStart ?? 0) >= mm.length) {
+      e.preventDefault(); yyyyRef.current?.focus(); yyyyRef.current?.select()
+    }
+    if (e.key === 'Backspace' && mm === '') {
+      e.preventDefault(); ddRef.current?.focus()
+    }
+  }
+  const handleYyyyKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'ArrowLeft' && (e.currentTarget.selectionStart ?? 0) === 0) {
+      e.preventDefault(); mmRef.current?.focus(); mmRef.current?.select()
+    }
+    if (e.key === 'Backspace' && yyyy === '') {
+      e.preventDefault(); mmRef.current?.focus()
+    }
+  }
+
+  const pickDay = (d: number) => {
+    const dStr = String(d).padStart(2, '0')
+    const mStr = String(pickerMonth + 1).padStart(2, '0')
+    const yStr = String(pickerYear)
+    setDd(dStr); setMm(mStr); setYyyy(yStr)
+    onChange(`${yStr}-${mStr}-${dStr}`)
+    setShowPicker(false)
+  }
+
+  const prevMonth = () => { if (pickerMonth === 0) { setPickerMonth(11); setPickerYear(y => y-1) } else setPickerMonth(m => m-1) }
+  const nextMonth = () => { if (pickerMonth === 11) { setPickerMonth(0); setPickerYear(y => y+1) } else setPickerMonth(m => m+1) }
+
+  const selectedDateStr = yyyy && mm && dd ? `${yyyy}-${mm}-${dd}` : ''
+
   return (
-    <div className="re-form-group">
+    <div className="re-form-group" ref={wrapperRef} style={{ position: 'relative' }}>
       <label className="re-label">{label}</label>
       <div className="re-date-input">
-        <input className="re-date-seg" placeholder="DD" maxLength={2} value={dd} onChange={handleDd} inputMode="numeric" />
+        <input ref={ddRef} className="re-date-seg" placeholder="DD" maxLength={2} value={dd}
+          onChange={handleDd} onKeyDown={handleDdKey} inputMode="numeric" />
         <span className="re-date-sep">/</span>
-        <input className="re-date-seg" placeholder="MM" maxLength={2} value={mm} onChange={handleMm} ref={mmRef} inputMode="numeric" />
+        <input ref={mmRef} className="re-date-seg" placeholder="MM" maxLength={2} value={mm}
+          onChange={handleMm} onKeyDown={handleMmKey} inputMode="numeric" />
         <span className="re-date-sep">/</span>
-        <input className="re-date-seg re-date-seg--year" placeholder="AAAA" maxLength={4} value={yyyy} onChange={handleYyyy} ref={yyyyRef} inputMode="numeric" />
+        <input ref={yyyyRef} className="re-date-seg re-date-seg--year" placeholder="AAAA" maxLength={4} value={yyyy}
+          onChange={handleYyyy} onKeyDown={handleYyyyKey} inputMode="numeric" />
+        <button
+          className="re-date-picker-btn"
+          onClick={() => setShowPicker(s => !s)}
+          aria-label="Abrir calendario"
+          type="button"
+        >▾</button>
       </div>
+
+      {showPicker && (
+        <div className="re-date-dropdown">
+          <div className="re-date-dropdown-nav">
+            <button className="re-cal-btn" onClick={prevMonth} type="button">‹</button>
+            <span className="re-cal-title">{fullMonthNames[pickerMonth]} {pickerYear}</span>
+            <button className="re-cal-btn" onClick={nextMonth} type="button">›</button>
+          </div>
+          <div className="re-calendar-grid">
+            {dayNames.map((d, i) => <span key={i} className="re-cal-dayname">{d}</span>)}
+            {cells.map((d, i) =>
+              d === null ? <span key={`e-${i}`} /> :
+              <button
+                key={d}
+                type="button"
+                className={`re-cal-day ${selectedDateStr === `${pickerYear}-${String(pickerMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}` ? 're-cal-day--from' : ''}`}
+                onClick={() => pickDay(d)}
+              >{d}</button>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
