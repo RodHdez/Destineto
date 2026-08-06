@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import '../Pagscss/Reservas.css';
-import '../PageFlip.css' 
+import '../PageFlip.css'
 import useFlipNavigate from '../useFlipNavigate';
+
 
 const bookmarks = [
   { id: 'inicio',     label: 'Inicio',            path: '/'           },
@@ -13,6 +14,7 @@ const bookmarks = [
   { id: 'contacto',   label: 'Contáctanos',       path: '/contacto'   },
 ];
 
+
 const PAQUETES = [
   { nombre: 'Paquete Mamá',                  tipo: 'Experiencia', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'FEB 14 – 20',     tapeColor: '#e8a0a0' },
   { nombre: 'Paquete Papá',                  tipo: 'Experiencia', invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'JUN 17 – 20',     tapeColor: '#a0b4e8' },
@@ -21,13 +23,30 @@ const PAQUETES = [
   { nombre: 'Almuerzo Empresarial Navidad',  tipo: 'Evento',      invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'DIC 20 – 21',     tapeColor: '#e8a0a0' },
   { nombre: 'Fin de Año',                    tipo: 'Evento',      invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'DIC 30 – ENE 1', tapeColor: '#c0a0e8' },
   { nombre: 'Cumpleaños',                    tipo: 'Evento',      invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'Por definir',     tapeColor: '#e8c0a0' },
+  { nombre: 'Reserva Sin Paquete',            tipo: 'Estadía',  invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'Por definir',     tapeColor: '#c8c8c8' },
   { nombre: 'Boda',                          tipo: 'Evento',      invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'Por definir',     tapeColor: '#f0e0c0' },
 ]
+
+
+
+
+// ── Format date as "Lunes 1 de Junio, 2026" ──────────────
+function formatDateES(dateStr: string): string {
+  if (!dateStr) return '—'
+  const [y, m, d] = dateStr.split('-').map(Number)
+  if (!y || !m || !d) return dateStr
+  const date = new Date(y, m - 1, d)
+  const days = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado']
+  const months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+  return `${days[date.getDay()]} ${d} de ${months[m - 1]}, ${y}`
+}
+
 
 const LOCACIONES = [
   'La Cabaña del Tío Neto — Los Naranjos',
   'La Barriña — Barra de Santiago',
 ]
+
 
 interface BookingData {
   fechaDesde: string
@@ -44,11 +63,13 @@ interface BookingData {
   cvv: string
 }
 
+
 const emptyBooking: BookingData = {
   fechaDesde: '', fechaHasta: '', paquete: '', locacion: '',
   nombre: '', email: '', telefono: '', direccion: '',
   metodoPago: 'tarjeta', numeroTarjeta: '', expiracion: '', cvv: '',
 }
+
 
 // ── Smooth date input ─────────────────────────────────────
 function DateInput({ value, onChange, label }: {
@@ -65,9 +86,11 @@ function DateInput({ value, onChange, label }: {
   const yyyyRef = useRef<HTMLInputElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
 
+
   const today = new Date()
   const [pickerYear, setPickerYear] = useState(today.getFullYear())
   const [pickerMonth, setPickerMonth] = useState(today.getMonth())
+
 
   const monthNames = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
   const fullMonthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
@@ -76,12 +99,14 @@ function DateInput({ value, onChange, label }: {
   const daysInMonth = new Date(pickerYear, pickerMonth + 1, 0).getDate()
   const cells: (number | null)[] = [...Array(firstDay).fill(null), ...Array.from({length: daysInMonth}, (_, i) => i + 1)]
 
+
   useEffect(() => {
     if (value) {
       const [y, m, d] = value.split('-')
       setYyyy(y ?? ''); setMm(m ?? ''); setDd(d ?? '')
     }
-  }, [])
+  }, [value])
+
 
   // Close picker when clicking outside
   useEffect(() => {
@@ -94,11 +119,13 @@ function DateInput({ value, onChange, label }: {
     return () => document.removeEventListener('mousedown', handler)
   }, [])
 
+
   const emit = (d: string, m: string, y: string) => {
     if (d.length === 2 && m.length === 2 && y.length === 4) {
       onChange(`${y}-${m}-${d}`)
     }
   }
+
 
   const handleDd = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value.replace(/\D/g, '').slice(0, 2)
@@ -106,16 +133,19 @@ function DateInput({ value, onChange, label }: {
     if (v.length === 2) mmRef.current?.focus()
   }
 
+
   const handleMm = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value.replace(/\D/g, '').slice(0, 2)
     setMm(v); emit(dd, v, yyyy)
     if (v.length === 2) yyyyRef.current?.focus()
   }
 
+
   const handleYyyy = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value.replace(/\D/g, '').slice(0, 4)
     setYyyy(v); emit(dd, mm, v)
   }
+
 
   // Arrow key navigation between segments
   const handleDdKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -143,6 +173,7 @@ function DateInput({ value, onChange, label }: {
     }
   }
 
+
   const pickDay = (d: number) => {
     const dStr = String(d).padStart(2, '0')
     const mStr = String(pickerMonth + 1).padStart(2, '0')
@@ -152,10 +183,13 @@ function DateInput({ value, onChange, label }: {
     setShowPicker(false)
   }
 
+
   const prevMonth = () => { if (pickerMonth === 0) { setPickerMonth(11); setPickerYear(y => y-1) } else setPickerMonth(m => m-1) }
   const nextMonth = () => { if (pickerMonth === 11) { setPickerMonth(0); setPickerYear(y => y+1) } else setPickerMonth(m => m+1) }
 
+
   const selectedDateStr = yyyy && mm && dd ? `${yyyy}-${mm}-${dd}` : ''
+
 
   return (
     <div className="re-form-group" ref={wrapperRef} style={{ position: 'relative' }}>
@@ -176,6 +210,7 @@ function DateInput({ value, onChange, label }: {
           type="button"
         >▾</button>
       </div>
+
 
       {showPicker && (
         <div className="re-date-dropdown">
@@ -202,15 +237,18 @@ function DateInput({ value, onChange, label }: {
   )
 }
 
+
 // ── Package info popup ────────────────────────────────────
 function PaqueteInfoPopup({ onClose }: { onClose: () => void }) {
   const [selected, setSelected] = useState(0)
   const pkg = PAQUETES[selected]
 
+
   return createPortal(
     <div className="re-pkg-overlay" onClick={onClose} role="dialog" aria-modal="true">
       <div className="re-pkg-popup" onClick={e => e.stopPropagation()}>
         <button className="re-pkg-close" onClick={onClose} aria-label="Cerrar">✕</button>
+
 
         {/* Left: ticket list */}
         <div className="re-pkg-list">
@@ -232,12 +270,14 @@ function PaqueteInfoPopup({ onClose }: { onClose: () => void }) {
           ))}
         </div>
 
+
         {/* Right: ticket details */}
         <div className="re-pkg-detail">
           <div className="re-pkg-detail-header" style={{ borderLeft: `4px solid ${pkg.tapeColor}` }}>
             <h2 className="re-pkg-detail-name">{pkg.nombre}</h2>
             <span className="re-pkg-detail-tipo">{pkg.tipo}</span>
           </div>
+
 
           <div className="re-pkg-detail-grid">
             <div className="re-pkg-detail-item">
@@ -262,6 +302,7 @@ function PaqueteInfoPopup({ onClose }: { onClose: () => void }) {
             </div>
           </div>
 
+
           <div className="re-pkg-amenidades">
             <span className="re-pkg-detail-label">Amenidades</span>
             <ul className="re-pkg-amenidades-list">
@@ -274,6 +315,7 @@ function PaqueteInfoPopup({ onClose }: { onClose: () => void }) {
   , document.body)
 }
 
+
 // ── Mini calendar ─────────────────────────────────────────
 function MiniCalendar({ selectedFrom, selectedTo, onSelect }: {
   selectedFrom: string
@@ -283,6 +325,7 @@ function MiniCalendar({ selectedFrom, selectedTo, onSelect }: {
   const today = new Date()
   const [viewYear, setViewYear] = useState(today.getFullYear())
   const [viewMonth, setViewMonth] = useState(today.getMonth())
+
 
   const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
   const dayNames = ['D','L','M','M','J','V','S']
@@ -299,12 +342,13 @@ function MiniCalendar({ selectedFrom, selectedTo, onSelect }: {
   const prevMonth = () => { if (viewMonth === 0) { setViewMonth(11); setViewYear(y => y-1) } else setViewMonth(m => m-1) }
   const nextMonth = () => { if (viewMonth === 11) { setViewMonth(0); setViewYear(y => y+1) } else setViewMonth(m => m+1) }
 
+
   return (
     <div className="re-calendar">
       <div className="re-calendar-nav">
-        <button className="re-cal-btn" onClick={prevMonth}>‹</button>
+        <button type="button" className="re-cal-btn" onClick={prevMonth}>‹</button>
         <span className="re-cal-title">{monthNames[viewMonth]} {viewYear}</span>
-        <button className="re-cal-btn" onClick={nextMonth}>›</button>
+        <button type="button" className="re-cal-btn" onClick={nextMonth}>›</button>
       </div>
       <div className="re-calendar-grid">
         {dayNames.map((d, i) => <span key={i} className="re-cal-dayname">{d}</span>)}
@@ -322,12 +366,14 @@ function MiniCalendar({ selectedFrom, selectedTo, onSelect }: {
   )
 }
 
+
 function Reservas() {
   const flipTo = useFlipNavigate()
   const [step, setStep] = useState(0)
   const [booking, setBooking] = useState<BookingData>(emptyBooking)
   const [confirmNum] = useState(() => Math.random().toString(36).slice(2,10).toUpperCase())
   const [showPkgInfo, setShowPkgInfo] = useState(false)
+
 
   useEffect(() => {
     const saved = sessionStorage.getItem('selectedPackage')
@@ -337,8 +383,10 @@ function Reservas() {
     }
   }, [])
 
+
   const set = (field: keyof BookingData) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) =>
     setBooking(b => ({ ...b, [field]: e.target.value }))
+
 
   const handleDateSelect = (date: string) => {
     if (!booking.fechaDesde || (booking.fechaDesde && booking.fechaHasta)) {
@@ -348,6 +396,7 @@ function Reservas() {
       else setBooking(b => ({ ...b, fechaDesde: date, fechaHasta: '' }))
     }
   }
+
 
   const flipAnimation = (forward: boolean, then: () => void) => {
     const right = document.querySelector('.flip-pages') as HTMLElement | null
@@ -386,9 +435,11 @@ function Reservas() {
     }, 500)
   }
 
+
   const goToPayment      = () => flipAnimation(true,  () => setStep(1))
   const goToConfirmation = () => flipAnimation(true,  () => setStep(2))
   const goBack           = () => flipAnimation(false, () => setStep(s => Math.max(s - 1, 0)))
+
 
   // ── Step 0 left: Calendar ────────────────────────────────
   const step0Left = (
@@ -406,10 +457,12 @@ function Reservas() {
     </div>
   )
 
+
   // ── Step 0 right: Package + Location ────────────────────
   const step0Right = (
     <div className="re-page-content re-page-content--top">
       <h2 className="re-section-title">Tu Reserva</h2>
+
 
       <div className="re-form-group">
         <div className="re-label-row">
@@ -422,6 +475,7 @@ function Reservas() {
         </select>
       </div>
 
+
       <div className="re-form-group">
         <label className="re-label">Locación</label>
         <select className="re-select" value={booking.locacion} onChange={set('locacion')}>
@@ -429,6 +483,7 @@ function Reservas() {
           {LOCACIONES.map(l => <option key={l} value={l}>{l}</option>)}
         </select>
       </div>
+
 
       {booking.paquete && (
         <div className="re-booking-preview">
@@ -440,10 +495,11 @@ function Reservas() {
           </>}
           {booking.fechaDesde && <>
             <span className="re-label" style={{marginTop:'0.5rem'}}>Fechas</span>
-            <span className="re-preview-val">{booking.fechaDesde}{booking.fechaHasta ? ` → ${booking.fechaHasta}` : ''}</span>
+            <span className="re-preview-val">{formatDateES(booking.fechaDesde)}{booking.fechaHasta ? ` → ${formatDateES(booking.fechaHasta)}` : ''}</span>
           </>}
         </div>
       )}
+
 
       <div style={{marginTop: 'auto'}}>
         <button
@@ -456,6 +512,7 @@ function Reservas() {
       </div>
     </div>
   )
+
 
   // ── Step 1 left: Client + Payment ───────────────────────
   const step1Left = (
@@ -479,6 +536,7 @@ function Reservas() {
           <input type="text" className="re-input" placeholder="Ciudad, País" value={booking.direccion} onChange={set('direccion')} />
         </div>
       </div>
+
 
       <h2 className="re-section-title" style={{marginTop:'1.2rem'}}>Información de Pago</h2>
       <div className="re-form">
@@ -516,6 +574,7 @@ function Reservas() {
     </div>
   )
 
+
   // ── Step 1 right: Summary ────────────────────────────────
   const step1Right = (
     <div className="re-page-content re-page-content--top">
@@ -523,11 +582,16 @@ function Reservas() {
       <div className="re-summary-card">
         <div className="re-summary-row"><span className="re-summary-label">Paquete</span><span className="re-summary-val">{booking.paquete || '—'}</span></div>
         <div className="re-summary-row"><span className="re-summary-label">Locación</span><span className="re-summary-val">{booking.locacion || '—'}</span></div>
-        <div className="re-summary-row"><span className="re-summary-label">Desde</span><span className="re-summary-val">{booking.fechaDesde || '—'}</span></div>
-        <div className="re-summary-row"><span className="re-summary-label">Hasta</span><span className="re-summary-val">{booking.fechaHasta || '—'}</span></div>
+        <div className="re-summary-row"><span className="re-summary-label">Desde</span><span className="re-summary-val">{formatDateES(booking.fechaDesde)}</span></div>
+        <div className="re-summary-row"><span className="re-summary-label">Hasta</span><span className="re-summary-val">{formatDateES(booking.fechaHasta)}</span></div>
         <div className="re-summary-divider" />
         <div className="re-summary-row"><span className="re-summary-label">Precio del Paquete</span><span className="re-summary-val">Por definir</span></div>
         <div className="re-summary-row re-summary-row--total"><span className="re-summary-label">Total</span><span className="re-summary-val">Por definir</span></div>
+      </div>
+      <div className="re-summary-notice">
+        <p className="re-notice-text">📸 Por favor tome foto del comprobante de pago</p>
+        <p className="re-notice-contact">✉ contacto@destineto.com · 📞 +503 0000-0000</p>
+        <a href="mailto:contacto@destineto.com" className="re-notice-link">Contáctanos →</a>
       </div>
       <div style={{marginTop: 'auto'}}>
         <button className="re-proceed-btn" disabled={!booking.nombre || !booking.email} onClick={goToConfirmation}>
@@ -536,6 +600,7 @@ function Reservas() {
       </div>
     </div>
   )
+
 
   // ── Step 2 left: Confirmation ────────────────────────────
   const step2Left = (
@@ -552,6 +617,7 @@ function Reservas() {
       </button>
     </div>
   )
+
 
   // ── Step 2 right: Receipt ────────────────────────────────
   const step2Right = (
@@ -578,12 +644,20 @@ function Reservas() {
           <div className="re-receipt-barcode-bars" />
           <span className="re-receipt-barcode-num">DESTINETO · {confirmNum}</span>
         </div>
+      <div className="re-receipt-actions">
+        <button className="re-print-btn" onClick={() => window.print()} type="button">🖨 Imprimir</button>
+        <button className="re-print-btn" onClick={() => {
+          window.print()
+        }} type="button">📄 Guardar como PDF</button>
       </div>
     </div>
+  </div>
   )
+
 
   const leftContent  = [step0Left,  step1Left,  step2Left ][step]
   const rightContent = [step0Right, step1Right, step2Right][step]
+
 
   return (
     <div className="re-scene">
@@ -592,6 +666,7 @@ function Reservas() {
         <span className="re-current-tab__dot" />
         Reservas
       </div>
+
 
       <div className="re-journal open-book flip-journal">
         <div className="re-back-cover" aria-hidden="true" />
@@ -605,9 +680,11 @@ function Reservas() {
           </div>
         </div>
 
+
         <div className="re-rings" aria-hidden="true">
           {[...Array(6)].map((_, i) => <div key={i} className="re-ring" />)}
         </div>
+
 
         <nav className="re-bookmarks" aria-label="Secciones del sitio">
           {bookmarks.map((bm, i) => (
@@ -616,6 +693,7 @@ function Reservas() {
             </button>
           ))}
         </nav>
+
 
         <div className="re-step-indicator">
           {['Fecha & Paquete', 'Pago', 'Confirmación'].map((label, i) => (
@@ -627,9 +705,11 @@ function Reservas() {
         </div>
       </div>
 
+
       {showPkgInfo && <PaqueteInfoPopup onClose={() => setShowPkgInfo(false)} />}
     </div>
   )
 }
+
 
 export default Reservas;

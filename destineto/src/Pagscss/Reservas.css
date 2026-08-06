@@ -1085,3 +1085,83 @@
   justify-content: space-between;
   margin-bottom: 0.4rem;
 }
+
+/* ── Summary notice ──────────────────────────────────────── */
+.re-summary-notice {
+  background: rgba(139,69,19,0.06);
+  border: 1px dashed rgba(139,69,19,0.25);
+  border-radius: 4px;
+  padding: 0.65rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.re-notice-text {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0;
+}
+
+.re-notice-contact {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  color: var(--ink-light);
+  margin: 0;
+}
+
+.re-notice-link {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bm-bg);
+  text-decoration: none;
+  border-bottom: 1px solid var(--bm-bg);
+  align-self: flex-start;
+  transition: opacity 0.2s;
+}
+
+.re-notice-link:hover { opacity: 0.7; }
+
+/* ── Print / PDF buttons ─────────────────────────────────── */
+.re-receipt-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 0 0.25rem;
+}
+
+.re-print-btn {
+  flex: 1;
+  background: none;
+  border: 1px solid rgba(30,18,9,0.2);
+  border-radius: 3px;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  padding: 0.45rem 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.re-print-btn:hover {
+  background: var(--ink);
+  color: #fff;
+}
+
+/* ── Print styles — hides everything except receipt ─────── */
+@media print {
+  body > *:not(.re-scene) { display: none !important; }
+  .re-scene { padding: 0 !important; background: none !important; }
+  .re-bg, .re-bookmarks, .re-rings, .re-step-indicator,
+  .re-book-page.re-page-left, .re-back-cover,
+  .re-arrow, .re-current-tab, .re-receipt-actions { display: none !important; }
+  .re-book-body { box-shadow: none !important; }
+  .re-receipt { box-shadow: none !important; border: 1px solid #ccc !important; }
+}
