@@ -692,7 +692,7 @@ function Reservas() {
               {bm.label}
             </button>
           ))}
-        </nv>
+        </nav>
 
 
         <div className="re-step-indicator">
