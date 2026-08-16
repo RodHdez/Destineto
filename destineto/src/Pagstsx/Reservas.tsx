@@ -25,6 +25,7 @@ const PAQUETES = [
   { nombre: 'Cumpleaños',                    tipo: 'Evento',      invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'Por definir',     tapeColor: '#e8c0a0' },
   { nombre: 'Reserva Sin Paquete',            tipo: 'Estadía',  invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'Por definir',     tapeColor: '#c8c8c8' },
   { nombre: 'Boda',                          tipo: 'Evento',      invitados: 'Por definir', duracion: 'Por definir', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'Por definir',     tapeColor: '#f0e0c0' },
+  { nombre: 'Pase de Día', tipo: 'Estadía', invitados: 'Por definir', duracion: '1 día', precio: 'Por definir', precioAdicional: 'Por definir', amenidades: ['Por definir'], fechas: 'Por definir', tapeColor: '#a0c8a0' },
 ]
 
 
@@ -373,7 +374,7 @@ function Reservas() {
   const [booking, setBooking] = useState<BookingData>(emptyBooking)
   const [confirmNum] = useState(() => Math.random().toString(36).slice(2,10).toUpperCase())
   const [showPkgInfo, setShowPkgInfo] = useState(false)
-
+  const [paymentOpen, setPaymentOpen] = useState(false)
 
   useEffect(() => {
     const saved = sessionStorage.getItem('selectedPackage')
@@ -516,29 +517,37 @@ function Reservas() {
 
   // ── Step 1 left: Client + Payment ───────────────────────
   const step1Left = (
-    <div className="re-page-content re-page-content--top">
-      <h2 className="re-section-title">Información del Cliente</h2>
-      <div className="re-form">
-        <div className="re-form-group">
-          <label className="re-label">Nombre Completo</label>
-          <input type="text" className="re-input" placeholder="Tu nombre..." value={booking.nombre} onChange={set('nombre')} />
-        </div>
-        <div className="re-form-group">
-          <label className="re-label">Correo Electrónico</label>
-          <input type="email" className="re-input" placeholder="correo@ejemplo.com" value={booking.email} onChange={set('email')} />
-        </div>
-        <div className="re-form-group">
-          <label className="re-label">Teléfono</label>
-          <input type="tel" className="re-input" placeholder="+503 0000 0000" value={booking.telefono} onChange={set('telefono')} />
-        </div>
-        <div className="re-form-group">
-          <label className="re-label">Dirección</label>
-          <input type="text" className="re-input" placeholder="Ciudad, País" value={booking.direccion} onChange={set('direccion')} />
-        </div>
+  <div className="re-page-content re-page-content--top" style={{ position: 'relative', overflow: 'hidden' }}>
+    <h2 className="re-section-title">Información del Cliente</h2>
+    <div className="re-form">
+      <div className="re-form-group">
+        <label className="re-label">Nombre Completo</label>
+        <input type="text" className="re-input" placeholder="Tu nombre..." value={booking.nombre} onChange={set('nombre')} />
       </div>
+      <div className="re-form-group">
+        <label className="re-label">Correo Electrónico</label>
+        <input type="email" className="re-input" placeholder="correo@ejemplo.com" value={booking.email} onChange={set('email')} />
+      </div>
+      <div className="re-form-group">
+        <label className="re-label">Teléfono</label>
+        <input type="tel" className="re-input" placeholder="+503 0000 0000" value={booking.telefono} onChange={set('telefono')} />
+      </div>
+      <div className="re-form-group">
+        <label className="re-label">Dirección</label>
+        <input type="text" className="re-input" placeholder="Ciudad, País" value={booking.direccion} onChange={set('direccion')} />
+      </div>
+    </div>
 
+    <button className="re-open-payment-btn" onClick={() => setPaymentOpen(true)}>
+      + Información de Pago
+    </button>
 
-      <h2 className="re-section-title" style={{marginTop:'1.2rem'}}>Información de Pago</h2>
+    {/* Sliding payment note */}
+    <div className={`re-payment-note ${paymentOpen ? 're-payment-note--open' : ''}`}>
+      <div className="re-payment-note-tab" onClick={() => setPaymentOpen(false)}>
+        ↓ Cerrar
+      </div>
+      <h2 className="re-section-title">Información de Pago</h2>
       <div className="re-form">
         <div className="re-form-group">
           <label className="re-label">Método de Pago</label>
@@ -572,7 +581,8 @@ function Reservas() {
         )}
       </div>
     </div>
-  )
+  </div>
+)
 
 
   // ── Step 1 right: Summary ────────────────────────────────

@@ -114,6 +114,9 @@
   flex-direction: column;
   position: relative;
   min-height: 520px;
+  max-height: 520px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .re-page-left {
@@ -137,7 +140,24 @@
 
 .re-page-content--top {
   justify-content: flex-start;
+  overflow: hidden;
 }
+
+.re-page-content--top .re-section-title { font-size: 0.85rem; margin-bottom: 0.1rem; }
+.re-page-content--top .re-label { font-size: 0.55rem; }
+.re-page-content--top .re-input,
+.re-page-content--top .re-select { font-size: 0.75rem; padding: 0.2rem 0.1rem; }
+.re-page-content--top .re-form { gap: 0.5rem; }
+.re-page-content--top .re-form-group { gap: 0.15rem; }
+.re-page-content--top .re-booking-preview { padding: 0.4rem 0.6rem; }
+.re-page-content--top .re-preview-val { font-size: 0.72rem; }
+.re-page-content--top .re-summary-card { gap: 0.3rem; padding: 0.6rem; }
+.re-page-content--top .re-summary-label { font-size: 0.52rem; }
+.re-page-content--top .re-summary-val { font-size: 0.72rem; }
+.re-page-content--top .re-summary-notice { padding: 0.4rem 0.6rem; }
+.re-page-content--top .re-notice-text,
+.re-page-content--top .re-notice-contact { font-size: 0.6rem; }
+.re-page-content--top .re-proceed-btn { padding: 0.5rem; font-size: 0.72rem; }
 
 .re-page-content--centered {
   align-items: center;
@@ -658,15 +678,17 @@
 /* ── Arrows ──────────────────────────────────────────────── */
 .re-arrow {
   position: absolute;
-  bottom: 1rem;
+  bottom: 0.5rem;
+  left: 1rem;
   background: none;
   border: none;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   cursor: pointer;
   color: var(--ink);
   opacity: 0.35;
   transition: opacity 0.2s;
-  padding: 0.5rem;
+  padding: 0.3rem;
+  z-index: 10;
 }
 
 .re-arrow:hover { opacity: 0.9; }
@@ -1157,11 +1179,81 @@
 
 /* ── Print styles — hides everything except receipt ─────── */
 @media print {
-  body > *:not(.re-scene) { display: none !important; }
-  .re-scene { padding: 0 !important; background: none !important; }
-  .re-bg, .re-bookmarks, .re-rings, .re-step-indicator,
-  .re-book-page.re-page-left, .re-back-cover,
-  .re-arrow, .re-current-tab, .re-receipt-actions { display: none !important; }
-  .re-book-body { box-shadow: none !important; }
-  .re-receipt { box-shadow: none !important; border: 1px solid #ccc !important; }
+  * { visibility: hidden; }
+  .re-receipt, .re-receipt * { visibility: visible; }
+  .re-receipt {
+    position: absolute !important;
+    top: 50px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 420px !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+  }
+  .re-receipt-actions { display: none !important; }
 }
+
+/* ── Sliding payment note ────────────────────────────────── */
+.re-open-payment-btn {
+  margin-top: auto;
+  background: none;
+  border: 1px dashed rgba(30,18,9,0.25);
+  border-radius: 3px;
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  text-align: center;
+}
+
+.re-open-payment-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.re-payment-note {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: #f2ebd9;
+  border-top: 2px solid #c0a080;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  padding: 0 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  overflow-y: auto;
+  /* tape effect at top */
+  border-radius: 4px 4px 0 0;
+}
+
+.re-payment-note--open {
+  transform: translateY(0);
+}
+
+.re-payment-note-tab {
+  position: sticky;
+  top: 0;
+  background: #f2ebd9;
+  padding: 0.6rem 0 0.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  cursor: pointer;
+  text-align: center;
+  border-bottom: 1px dashed rgba(30,18,9,0.15);
+  margin-bottom: 0.5rem;
+}
+
+.re-payment-note-tab:hover { opacity: 0.7; }
